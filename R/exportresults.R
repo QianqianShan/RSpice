@@ -8,7 +8,8 @@
 #' @return the list of the output we specified.
 #' @useDynLib RSpice
 #' @export
-exportResults <- function(location,data){
-  .C("ExportResults", as.integer(location-1), as.double(data))
+exportResults <- function(location, data) {
+    .C("ExportResults", as.integer(location - 
+        1), as.double(data))
 }
 

@@ -2,6 +2,6 @@
 
 #' @useDynLib RSpice
 #' @export
-runSpice<-function(){
-  .C("RunSpice")
+runSpice <- function() {
+    .C("RunSpice")
 }

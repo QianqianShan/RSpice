@@ -2,7 +2,7 @@
 #' unload NgSpice
 #' @useDynLib RSpice
 #' @export
-unloadSpice<-function() {
-  .C("UnloadNgspice")
+unloadSpice <- function() {
+    .C("UnloadNgspice")
 }
 
