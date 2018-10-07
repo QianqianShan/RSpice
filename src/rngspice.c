@@ -5,12 +5,14 @@
 
 /* NOTE *** Must credit ngspice.dll example ***/
 
-
+#include <R.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h> 
 #include <string.h>
 #include <ctype.h>
+//#include <errno.h>
+
 
 #ifdef WIN32
 #include <windows.h>
@@ -223,9 +225,9 @@ void *ngdllhandle = NULL;
 void InitializeSpice(char *dllpath,char *dllname) {
 	char *errmsg = NULL;
 	char *fulldllname;
-	printf("****************************\n");
-	printf("**  ngspice shared start  **\n");
-	printf("****************************\n");
+	Rprintf("****************************\n");
+	Rprintf("**  ngspice shared start  **\n");
+	Rprintf("****************************\n");
 
 	fulldllname=calloc(((dllpath != NULL) ? strlen(dllpath):0)+strlen(dllname)+20,1);
 	if (dllpath) {
@@ -235,48 +237,52 @@ void InitializeSpice(char *dllpath,char *dllname) {
 	strcat(fulldllname,LIB_PREFIX);
 	strcat(fulldllname,dllname);
 	  
-	printf("Load %s\n",fulldllname);
+	Rprintf("Load %s\n",fulldllname);
 
 	
 	
 	ngdllhandle = dlopen(fulldllname, RTLD_NOW);
 	errmsg = dlerror();
 	if (errmsg)
-		printf("%s\n", errmsg);
+		Rprintf("%s\n", errmsg);
 	if (ngdllhandle)
-	        printf("%s loaded\n",fulldllname);
+	        Rprintf("%s loaded\n",fulldllname);
 	else {
-	        printf("%s not loaded !\n",fulldllname);
-		exit(1);
+	        Rprintf("%s not loaded !\n",fulldllname);
+		//exit(1);
+                //error();
+         //printf("Value of errno: %d\n ", errno); 
+         //printf("The error message is : %s\n",  
+         //                strerror(errno)); 
 	}
 	ngSpice_Init_handle = dlsym(ngdllhandle, "ngSpice_Init");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	ngSpice_Command_handle = (int(*)(char*))dlsym(ngdllhandle, "ngSpice_Command");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	ngSpice_Circ_handle = (int(*)(char**))dlsym(ngdllhandle, "ngSpice_Circ");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	ngSpice_CurPlot_handle = dlsym(ngdllhandle, "ngSpice_CurPlot");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	ngSpice_AllVecs_handle = dlsym(ngdllhandle, "ngSpice_AllVecs");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	ngSpice_GVI_handle = dlsym(ngdllhandle, "ngGet_Vec_Info");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	ngSpice_AllPlots_handle = dlsym(ngdllhandle, "ngSpice_AllPlots");
 	errmsg = dlerror();
 	if (errmsg)
-	        printf("%s",errmsg);
+	        Rprintf("%s",errmsg);
 	/*When ngspice.dll is loaded, initialize the simulator by calling ngSpice_Init_handle,
 	address pointers of callback functions such as SendChar*, SendStat* are sent to ngspice.dll .*/
 	((int * (*)(SendChar*, SendStat*, ControlledExit*, SendData*, SendInitData*,
@@ -341,7 +347,7 @@ void AlterParameter(int *nalter, char **parameter) {
 		ptr = parameter[i];
 		((int * (*)(char*)) ngSpice_Command_handle)(ptr);
 #ifdef DEBUG
-		printf("Alter command sent to ngspice\n");
+		Rprintf("Alter command sent to ngspice\n");
 #endif
 	}
 }
@@ -417,19 +423,19 @@ void GetLength(int *size) {
 
 /*Function to unload NgSpice*/
 void UnloadNgspice() {
-	printf("Unload ngspice now\n");
+	Rprintf("Unload ngspice now\n");
 	dlclose(ngdllhandle);
-	printf("Unloaded\n\n");
+	Rprintf("Unloaded\n\n");
 	ngdllhandle = NULL;
 }
 
-/* Callback function in ngspice to transfer any string created by printf or puts.
+/* Callback function in ngspice to transfer any string created by printf.
 
 Output to stdout in ngspice is preceded by token stdout, same with stderr.*/
 int
 ng_getchar(char* outputreturn, int indent, void* userdata) {
 #ifdef DEBUG
-	printf("%s\n", outputreturn);
+	Rprintf("%s\n", outputreturn);
 #endif
 	/* set a flag if an error message occurred */
 	if (ciprefix("stderr Error:", outputreturn))
@@ -441,7 +447,7 @@ ng_getchar(char* outputreturn, int indent, void* userdata) {
 simulation status (type and progress in percent). */
 int ng_getstat(char* outputreturn, int ident, void* userdata) {
 #ifdef DEBUG
-	printf("%s\n", outputreturn);
+	Rprintf("%s\n", outputreturn);
 #endif
 	return 0;
 }
@@ -453,9 +459,9 @@ ng_thread_runs(bool noruns, int ident, void* userdata) {
         set_no_bg(noruns);
 #ifdef DEBUG
 	if (!noruns || !has_break)
-	        printf("bg running\n");
+	        Rprintf("bg running\n");
 	else
-	  	printf("All done!\n");
+	  	Rprintf("All done!\n");
 #endif
 	return 0;
 }
@@ -467,16 +473,16 @@ int
 ng_exit(int exitstatus, bool immediate, bool quitexit, int ident, void* userdata) {
 
 	if (quitexit) {
-		printf("DNote: Returned from quit with exit status %d\n", exitstatus);
+		Rprintf("DNote: Returned from quit with exit status %d\n", exitstatus);
 	}
 	if (immediate) {
-		printf("DNote: Unload ngspice\n");
+		Rprintf("DNote: Unload ngspice\n");
 		((int * (*)(char*)) ngSpice_Command_handle)("quit");
 		dlclose(ngdllhandle);
 	}
 
 	else {
-		printf("DNote: Prepare unloading ngspice\n");
+		Rprintf("DNote: Prepare unloading ngspice\n");
 		will_unload = true;
 	}
 
