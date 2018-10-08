@@ -225,35 +225,37 @@ void *ngdllhandle = NULL;
 void InitializeSpice(char *dllpath,char *dllname) {
 	char *errmsg = NULL;
 	char *fulldllname;
-	Rprintf("****************************\n");
-	Rprintf("**  ngspice shared start  **\n");
-	Rprintf("****************************\n");
+
 
 	fulldllname=calloc(((dllpath != NULL) ? strlen(dllpath):0)+strlen(dllname)+20,1);
 	if (dllpath) {
 	  strcat(fulldllname,dllpath);
 	  strcat(fulldllname,PATH_SEPARATOR);
 	}
-	strcat(fulldllname,LIB_PREFIX);
+	//strcat(fulldllname,LIB_PREFIX);
 	strcat(fulldllname,dllname);
 	  
-	Rprintf("Load %s\n",fulldllname);
+	Rprintf("Start loading %s\n",fulldllname);
 
 	
-	
+        Rprintf("****************************\n");
+	Rprintf("**  ngspice shared start  **\n");
+	Rprintf("****************************\n");
 	ngdllhandle = dlopen(fulldllname, RTLD_NOW);
 	errmsg = dlerror();
-	if (errmsg)
+       	if (errmsg)
 		Rprintf("%s\n", errmsg);
+        /* Rprintf("Value of errno: %d\n ", errno); 
+         Rprintf("The error message is : %s\n",  
+                         strerror(errno)); */
+
 	if (ngdllhandle)
 	        Rprintf("%s loaded\n",fulldllname);
 	else {
 	        Rprintf("%s not loaded !\n",fulldllname);
 		//exit(1);
-                //error();
-         //printf("Value of errno: %d\n ", errno); 
-         //printf("The error message is : %s\n",  
-         //                strerror(errno)); 
+          //      error();
+
 	}
 	ngSpice_Init_handle = dlsym(ngdllhandle, "ngSpice_Init");
 	errmsg = dlerror();

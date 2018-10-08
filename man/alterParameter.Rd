@@ -13,7 +13,7 @@ alterParameter(nalter, parameter)
 one time's change.}
 }
 \value{
-1. "Alter command sent to ngspice" if the parameters are altered
+1. 'Alter command sent to ngspice' if the parameters are altered
 successfully; 2. the values of nalter and paramters we sent down.
 }
 \description{

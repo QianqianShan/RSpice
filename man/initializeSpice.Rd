@@ -9,10 +9,7 @@ initializeSpice(dllpath, dllname)
 \arguments{
 \item{dllpath}{the path of the dll/so shared library file}
 
-\item{dllname}{the name of the shared library without extension}
-}
-\value{
-A character string saying "ngspice loaded".
+\item{dllname}{the name of the shared library without extensions}
 }
 \description{
 Initialize NgSpice.

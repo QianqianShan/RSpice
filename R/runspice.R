@@ -3,5 +3,6 @@
 #' @useDynLib RSpice
 #' @export
 runSpice <- function() {
-    .C("RunSpice")
+   res<- .C("RunSpice")
+   invisible(res)
 }
