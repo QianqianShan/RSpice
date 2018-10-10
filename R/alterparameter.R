@@ -13,7 +13,7 @@
 #' @useDynLib RSpice
 #' @export
 alterParameter <- function(altercmd) {
-   res<-  .C("AlterParameter", as.integer(length(altercmd)), 
+    res <- .C("AlterParameter", as.integer(length(altercmd)), 
         as.character(altercmd))[[]]
-   invisible(res)
+    invisible(res)
 }

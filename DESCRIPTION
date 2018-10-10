@@ -1,12 +1,12 @@
 Package: RSpice
-Title: R interface to the Ngspice simulator
+Title: R Interface to the Ngspice Simulator
 Version: 1.0.1
 Authors@R: c(
     person("Qianqian", "Shan", email = "qianqianshan.am@gmail.com", role = c("aut", "cre")), 
     person("Stephen D.", "Holland", email = "sdh4@iastate.edu", role = c("aut")),
     person("William Q.", "Meeker", email = "wqmeeker@iastate.edu", role = c("aut")))
 Maintainer: Qianqian Shan <qianqianshan.am@gmail.com>	
-Description: An implementation of the interface to allow users to run Ngspcice
+Description: An implementation of the interface to allow users to run Ngspice
      in R via the shared library of Ngspice. It provides functions to control
      the simulator and read the feedback from Ngspice to R. By using this 
      package, it is possible to save and analyze the outputs from Ngspice

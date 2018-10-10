@@ -12,5 +12,6 @@ A data fram with two columns: location and Name. The location column
         column shows the corresponding output names returned from Ngspice.
 }
 \description{
-\code{getPlotNames} returns the ouput names from Ngspice after running a circuit.
+\code{getPlotNames} returns the ouput names from Ngspice after running a 
+        circuit simulation.
 }

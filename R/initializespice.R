@@ -1,19 +1,23 @@
-#' Initialize NgSpice.
-#' @param dllpath the path of the dll/so shared library file
-#' @param dllname the name of the shared library without extensions 
+#' Initialize Ngspice.
+#' @param dylibpath the path of the .dll/.so Ngspice shared library file
+#' @param dylibname the name of the shared library without extensions 
 #' @useDynLib RSpice
+#' @examples
+#' initializeSpice(findSpice(), "libngspice.so")
 #' @export
 #'
-initializeSpice <- function(dllpath, dllname) {
-    if (is.null(dllpath)) {
+initializeSpice <- function(dylibpath, dylibname) {
+    if (is.null(dylibpath)) {
         dllrawpath <- character(0)
     } else {
-      # check if the the .so/.dll file exist in the given path 
-      if(!file.exists(paste0(dllpath, .Platform$file.sep,dllname))) {
-        stop("The Ngspice shared object is not found in the specified path.")
-      }
-      
-        dllrawpath <- c(charToRaw(dllpath), 
+        # check if the the .so/.dll file exists in
+        # the given path
+        if (!file.exists(paste0(dylibpath, 
+            .Platform$file.sep, dylibname))) {
+            stop("The Ngspice shared object is not found in the specified path.")
+        }
+        
+        dllrawpath <- c(charToRaw(dylibpath), 
             as.raw(0))
     }
     dllraw <- c(charToRaw(dllname), as.raw(0))

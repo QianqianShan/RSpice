@@ -2,20 +2,20 @@
 % Please edit documentation in R/alterparameter.R
 \name{alterParameter}
 \alias{alterParameter}
-\title{Change the parameters in the previously loaded circuit.}
+\title{Change the device or model parameters of the loaded circuit.}
 \usage{
-alterParameter(nalter, parameter)
+alterParameter(altercmd)
 }
 \arguments{
-\item{nalter}{the total number of times we want to alter the parameter(s).}
-
-\item{parameter}{a list of parameters which will be sent to Spice for
-one time's change.}
+\item{altercmd}{a vector of parameters which to be sent to Ngspice for
+one time change.}
 }
 \value{
 1. 'Alter command sent to ngspice' if the parameters are altered
-successfully; 2. the values of nalter and paramters we sent down.
+successfully; 2. paramters we sent down.
 }
 \description{
-Change the parameters in the previously loaded circuit.
+#Change the device or model parameters of the loaded circuit. See more
+details on Chapter 17 and 19 on how to alter the parameters in 
+\url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
 }

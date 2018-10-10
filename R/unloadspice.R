@@ -3,7 +3,7 @@
 #' @useDynLib RSpice
 #' @export
 unloadSpice <- function() {
-   res<- .C("UnloadNgspice")
-   invisible(res)
+    res <- .C("UnloadNgspice")
+    invisible(res)
 }
 

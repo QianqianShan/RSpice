@@ -14,3 +14,6 @@ initializeSpice(dllpath, dllname)
 \description{
 Initialize NgSpice.
 }
+\examples{
+initializeSpice(findSpice(), "libngspice.so")
+}

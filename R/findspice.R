@@ -20,7 +20,8 @@ findSpice <- function() {
             return(dirname(file.paths[1]))
         }
     } else {
-        # windows case find the dll file in Windows
+        # windows case find the dll file in
+        # Windows
         system(paste0("cmd.exe /c dir /b/s ngspice.dll 1> temp.name"))
         file.paths <- readLines(con = "temp.name")
         if (length(file.paths) == 0) {
