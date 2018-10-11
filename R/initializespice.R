@@ -1,4 +1,5 @@
 #' Initialize Ngspice.
+#' 
 #' @param dylibpath the path of the .dll/.so Ngspice shared library file
 #' @param dylibname the name of the shared library without extensions 
 #' @useDynLib RSpice

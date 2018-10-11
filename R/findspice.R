@@ -1,5 +1,7 @@
 #' Function to find if shared Ngspice library exists and return the path if Yes.
 #'
+#' @param dylibpath the path of the Ngspice shared library. 
+#' @param dylibname the name of the Ngspice shared library.  
 #' @return The function will stop if no shared library were found, and the first
 #'         available file path containing the shared library will be returned.
 #' @export
