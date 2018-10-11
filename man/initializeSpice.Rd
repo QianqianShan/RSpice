@@ -15,5 +15,5 @@ initializeSpice(dylibpath, dylibname)
 Initialize Ngspice.
 }
 \examples{
-initializeSpice(findSpice(), "libngspice.so")
+\dontrun{initializeSpice(findSpice(), 'libngspice.so')}
 }

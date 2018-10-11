@@ -4,7 +4,12 @@
 \alias{findSpice}
 \title{Function to find if shared Ngspice library exists and return the path if Yes.}
 \usage{
-findSpice()
+findSpice(dylibpath, dylibname)
+}
+\arguments{
+\item{dylibpath}{the path of the Ngspice shared library.}
+
+\item{dylibname}{the name of the Ngspice shared library.}
 }
 \value{
 The function will stop if no shared library were found, and the first

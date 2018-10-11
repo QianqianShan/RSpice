@@ -176,31 +176,31 @@ static inline void set_no_bg(bool val)
 Functions need to be 'void' type in order to be called by R. */
 
 /*Function to load the Ngspice shared library, and initialize the handles to be used */
-void InitializeSpice(char *dllpath,char *dllname); 
+void InitializeSpice(char *dllpath,char *dllname);
 
 /* Function to return the length of vector names returned from Ngspice */
-void GetVectorLength(int *length); 
+void GetVectorLength(int *length);
 
 /*Function to ask for the variable names which will be returned from NgSpice */
-void GetPlotNames(char **name); 
+void GetPlotNames(char **name);
 
 /*Function to find the length of the output data.*/
 void GetLength(int *size);
 
 /* Function to load the circuit*/
-void CircuitLoad(char **circarray, int *len); 
+void CircuitLoad(char **circarray, int *len);
 
 /* Function to alter model parameters*/
-void AlterParameter(int *nalter, char **parameter);  
+void AlterParameter(int *nalter, char **parameter);
 
 /* Function to pass a pointer to ngspice and record the results in the pointed memory location*/
-void ExportResults(int *number, double *data); 
+void ExportResults(int *number, double *data);
 
 /*Function to send 'run' or 'bg_run' command to ngspice.*/
 void RunSpice(int *bg);
 
 /*Function to unload spice when simulation is done*/
-void UnloadNgspice(); 
+void UnloadNgspice();
 
 
 
@@ -313,79 +313,90 @@ void InitializeSpice(char *dllpath,char *dllname)
 
 /* Function to load the circuit */
 void CircuitLoad(char **circarray, int *len)
-{   if (ngSpice_Circ_handle != NULL) {
-    /* Convert the last entry of the circarray to NULL(required by NgSpice)
-    which can be recognized in C, not the character string "NULL"
-    we sent down from R */
-    circarray[(*len - 1)] = NULL;
-    /*Send the circuit to ngspice */
-    ((int * (*)(char**)) ngSpice_Circ_handle)(circarray);
-    /* Change the last entry back to a string so R can copy it back without error message*/
-    circarray[(*len - 1)] = "NULL";
-} else {
-Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-}
+{
+    if (ngSpice_Circ_handle != NULL)
+    {
+        /* Convert the last entry of the circarray to NULL(required by NgSpice)
+        which can be recognized in C, not the character string "NULL"
+        we sent down from R */
+        circarray[(*len - 1)] = NULL;
+        /*Send the circuit to ngspice */
+        ((int * (*)(char**)) ngSpice_Circ_handle)(circarray);
+        /* Change the last entry back to a string so R can copy it back without error message*/
+        circarray[(*len - 1)] = "NULL";
+    }
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 
 }
 
 /* Function to first check if the simulation is done and pass a pointer to
    ngspice and record the results in the pointed memory location*/
 void ExportResults(int *number, double *data)
-{  if ( (ngSpice_AllVecs_handle != NULL) & (ngSpice_CurPlot_handle != NULL) & (ngSpice_AllPlots_handle != NULL) ) {
-    char  *curplot, *vecname;
-    int cnt;
-    char **vecarray, **plotnames;
-
-    wait_no_bg();
-
-    /* read current plot while simulation continues */
-    curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
-    vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-    plotnames = ((char ** (*)(char*)) ngSpice_AllPlots_handle)(curplot);
-    for (cnt = 0; plotnames[cnt] != NULL; cnt++)
+{  if (ngdllhandle != NULL)
+   // if ( (ngSpice_AllVecs_handle != NULL) & (ngSpice_CurPlot_handle != NULL) & (ngSpice_AllPlots_handle != NULL) )
     {
+        char  *curplot, *vecname;
+        int cnt;
+        char **vecarray, **plotnames;
+
+        wait_no_bg();
+
+        /* read current plot while simulation continues */
+        curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
+        vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
+        plotnames = ((char ** (*)(char*)) ngSpice_AllPlots_handle)(curplot);
+        for (cnt = 0; plotnames[cnt] != NULL; cnt++)
+        {
+        }
+
+        /* get length of the vector */
+        char plotvec[256];
+        pvector_info myvec;
+        int veclength;
+        vecname = vecarray[(*number)];
+        /*export the number-th plot data */
+        sprintf(plotvec, "%s.%s", curplot, vecname); /*write formatted data into a string*/
+        //Rprintf("plotvec is : %s \n", plotvec);
+        myvec = ((pvector_info(*)(char*)) ngSpice_GVI_handle)(plotvec);
+        veclength = myvec->v_length;
+        /*printf("\nActual length of vector %s is %d\n\n", plotvec, veclength); */
+
+        for (cnt = 0; cnt < veclength; cnt++)
+        {
+            data[cnt] = (myvec->v_realdata)[cnt];
+        }
     }
-
-    /* get length of the vector */
-    char plotvec[256];
-    pvector_info myvec;
-    int veclength;
-    vecname = vecarray[(*number)];
-    /*export the number-th plot data */
-    sprintf(plotvec, "%s.%s", curplot, vecname); /*write formatted data into a string*/
-   //Rprintf("plotvec is : %s \n", plotvec);
-    myvec = ((pvector_info(*)(char*)) ngSpice_GVI_handle)(plotvec);
-    veclength = myvec->v_length;
-    /*printf("\nActual length of vector %s is %d\n\n", plotvec, veclength); */
-
-    for (cnt = 0; cnt < veclength; cnt++)
+    else
     {
-        data[cnt] = (myvec->v_realdata)[cnt];
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
     }
-} else {
-Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-}
 
 }
 
 /* AlterParameter function is used to alter the parameter of the circuit
 for multiple times and for multiple parameters at one time*/
 void AlterParameter(int *nalter, char **parameter)
-{
-    if (ngSpice_Command_handle != NULL) {
-    int i;
-    char *ptr;
-    for (i = 0; i < (*nalter); i++)
+{   if (ngdllhandle != NULL)
+   // if (ngSpice_Command_handle != NULL)
     {
-        ptr = parameter[i];
-        ((int * (*)(char*)) ngSpice_Command_handle)(ptr);
+        int i;
+        char *ptr;
+        for (i = 0; i < (*nalter); i++)
+        {
+            ptr = parameter[i];
+            ((int * (*)(char*)) ngSpice_Command_handle)(ptr);
 #ifdef DEBUG
-        Rprintf("Alter command sent to ngspice\n");
+            Rprintf("Alter command sent to ngspice\n");
 #endif
+        }
     }
-} else {
-Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-}
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 }
 
 
@@ -393,103 +404,132 @@ Rprintf("Ngspice shared library or the exported functions not found. \n Use init
 /* AlterParameter function is used to alter the parameter of the circuit
 for multiple times and for multiple parameters at one time*/
 void SpiceCommand(int *n, char **cmd)
-{   if (ngSpice_Command_handle != NULL) {
-    int i;
-    char *ptr;
-    for (i = 0; i < (*n); i++)
+{  if (ngdllhandle != NULL)
+   // if (ngSpice_Command_handle != NULL)
     {
-        ptr = cmd[i];
-        ((int * (*)(char*)) ngSpice_Command_handle)(ptr);
+        int i;
+        char *ptr;
+        for (i = 0; i < (*n); i++)
+        {
+            ptr = cmd[i];
+            ((int * (*)(char*)) ngSpice_Command_handle)(ptr);
 #ifdef DEBUG
-        Rprintf("Commands sent to ngspice successfully.\n");
+            Rprintf("Commands sent to ngspice successfully.\n");
 #endif
+        }
     }
-} else {
-Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-}
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 }
 
 
 /*RunSpice: function to get the circuit or the circuit with altered parameter(s) started for new simulation */
 void RunSpice(int *bg)
-{    if (ngSpice_Command_handle != NULL) {
-    /* Throw out any existing results first */
-    ((int * (*)(char*)) ngSpice_Command_handle)("destroy all");
-    /* Now start the new run */
-    if (*bg == 1) {
-    ((int * (*)(char*)) ngSpice_Command_handle)("bg_run");
- } else {
-    ((int * (*)(char*)) ngSpice_Command_handle)("run");
-}
-} else {
-Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-}
+{ if (ngdllhandle != NULL)
+   // if (ngSpice_Command_handle != NULL)
+    {
+        /* Throw out any existing results first */
+        ((int * (*)(char*)) ngSpice_Command_handle)("destroy all");
+        /* Now start the new run */
+        if (*bg == 1)
+        {
+            ((int * (*)(char*)) ngSpice_Command_handle)("bg_run");
+        }
+        else
+        {
+            ((int * (*)(char*)) ngSpice_Command_handle)("run");
+        }
+    }
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 }
 
 /*Function to return the length of the vector names from Ngspice */
 void GetVectorLength(int *length)
-{   if (ngSpice_Command_handle != NULL) {
-    char  *curplot;
-    char **vecarray;
-
-    /* read current plot while simulation continues */
-    curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
-    vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-    int cnt;
-    for (cnt = 0; vecarray[cnt] != NULL; cnt++)
+{ if (ngdllhandle != NULL)
+   // if ( (ngSpice_Command_handle != NULL) & (ngSpice_CurPlot_handle != NULL) & (ngSpice_AllVecs_handle != NULL))
     {
+        char  *curplot;
+        char **vecarray;
+
+        /* read current plot while simulation continues */
+        curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
+        vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
+        int cnt;
+        for (cnt = 0; vecarray[cnt] != NULL; cnt++)
+        {
+        }
+        *length = cnt;
     }
-    *length = cnt;
-} else {
-Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-}
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 }
 
 
 /*Function to return the vector names of the data we want to save */
 void GetPlotNames(char **name)
-{
-    char  *curplot;
-    char **vecarray;
-
-    /* read current plot while simulation continues */
-    curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
-    vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-    int cnt;
-    for (cnt = 0; vecarray[cnt] != NULL; cnt++)
+{ if (ngdllhandle != NULL)
+   // if ((ngSpice_CurPlot_handle != NULL) & (ngSpice_AllVecs_handle != NULL))
     {
-        name[cnt] = vecarray[cnt];
+        char  *curplot;
+        char **vecarray;
+
+        /* read current plot while simulation continues */
+        curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
+        vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
+        int cnt;
+        for (cnt = 0; vecarray[cnt] != NULL; cnt++)
+        {
+            name[cnt] = vecarray[cnt];
+        }
+        // printf("Number of vectors: %d\n", cnt);
     }
-    // printf("Number of vectors: %d\n", cnt);
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 }
 
 
 /*Function to return the length of data we want to save */
 void GetLength(int *size)
-{
-    char  *curplot, *vecname;
-    char **vecarray;
+{   if (ngdllhandle != NULL)
+  //  if ((ngSpice_CurPlot_handle != NULL) & (ngSpice_AllVecs_handle != NULL) & (ngSpice_GVI_handle != NULL))
+    {
+        char  *curplot, *vecname;
+        char **vecarray;
 
-    wait_no_bg();
-    // printf("Ready to extract the size of the data \n");
+        wait_no_bg();
+        // printf("Ready to extract the size of the data \n");
 
-    /* read current plot while simulation continues */
-    curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
-    vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-    int cnt;
-    /*for (cnt = 0; vecarray[cnt] != NULL; cnt++) {
-    	printf("Vector name: %s\n", vecarray[cnt]);
+        /* read current plot while simulation continues */
+        curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
+        vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
+        int cnt;
+        /*for (cnt = 0; vecarray[cnt] != NULL; cnt++) {
+        	printf("Vector name: %s\n", vecarray[cnt]);
+        }
+
+        printf("Number of vectors: %d\n", cnt);
+        */
+        /* get length of first vector */
+        char plotvec[256];
+        pvector_info myvec;
+        vecname = vecarray[0];
+        sprintf(plotvec, "%s.%s", curplot, vecname); /*write formatted data into a string*/
+        myvec = ((pvector_info(*)(char*)) ngSpice_GVI_handle)(plotvec);
+        *size = myvec->v_length;
     }
-
-    printf("Number of vectors: %d\n", cnt);
-    */
-    /* get length of first vector */
-    char plotvec[256];
-    pvector_info myvec;
-    vecname = vecarray[0];
-    sprintf(plotvec, "%s.%s", curplot, vecname); /*write formatted data into a string*/
-    myvec = ((pvector_info(*)(char*)) ngSpice_GVI_handle)(plotvec);
-    *size = myvec->v_length;
+    else
+    {
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+    }
 }
 
 
@@ -506,6 +546,13 @@ void UnloadNgspice()
         dlclose(ngdllhandle);
         Rprintf("Unloaded\n\n");
         ngdllhandle = NULL;
+      //  funptr_t ngSpice_Init_handle = NULL;
+       // int(*ngSpice_Command_handle)(char*) = NULL;
+//int(*ngSpice_Circ_handle)(char **) = NULL;
+      //  funptr_t ngSpice_CurPlot_handle = NULL;
+       // funptr_t ngSpice_AllVecs_handle = NULL;
+      //  funptr_t ngSpice_GVI_handle = NULL;
+      //  funptr_t ngSpice_AllPlots_handle = NULL;
     }
     else
     {
@@ -522,7 +569,8 @@ ng_initdata(pvecinfoall intdata, int ident, void* userdata)
     int i;
     int vn = intdata->veccount;
 #ifdef DEBUG
-    for (i = 0; i < vn; i++) {
+    for (i = 0; i < vn; i++)
+    {
         printf("Vector: %s\n", intdata->vecs[i]->vecname);
     }
 #endif
@@ -540,8 +588,8 @@ ng_getchar(char* outputreturn, int indent, void* userdata)
 //#endif
     /* set a flag if an error message occurred */
     if (ciprefix("stderr Error:", outputreturn))
-       // error_ngspice = true;
-Rprintf("Error in Ngspice.\n");
+        // error_ngspice = true;
+        Rprintf("Error in Ngspice.\n");
     return 0;
 }
 

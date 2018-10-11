@@ -12,7 +12,11 @@ getPlotNames <- function() {
     res <- unlist(.C("GetPlotNames", as.character(character(length))))
     # Re-write the names into a data frame for
     # easier check of names and their order
+    if (length(res) > 0) {
     Names <- data.frame(c(1:length(res)), res)
     names(Names) <- c("location", "Name")
     return(Names)
+    } else {
+      stop("Error!")
+    }
 }

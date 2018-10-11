@@ -4,7 +4,7 @@
 #' @param dylibname the name of the shared library without extensions 
 #' @useDynLib RSpice
 #' @examples
-#' \donorun{initializeSpice(findSpice(), 'libngspice.so')}
+#' \dontrun{initializeSpice(findSpice(), 'libngspice.so')}
 #' @export
 #'
 initializeSpice <- function(dylibpath, dylibname) {
