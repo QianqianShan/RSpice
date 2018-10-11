@@ -2,17 +2,17 @@
 % Please edit documentation in R/initializespice.R
 \name{initializeSpice}
 \alias{initializeSpice}
-\title{Initialize NgSpice.}
+\title{Initialize Ngspice.}
 \usage{
-initializeSpice(dllpath, dllname)
+initializeSpice(dylibpath, dylibname)
 }
 \arguments{
-\item{dllpath}{the path of the dll/so shared library file}
+\item{dylibpath}{the path of the .dll/.so Ngspice shared library file}
 
-\item{dllname}{the name of the shared library without extensions}
+\item{dylibname}{the name of the shared library without extensions}
 }
 \description{
-Initialize NgSpice.
+Initialize Ngspice.
 }
 \examples{
 initializeSpice(findSpice(), "libngspice.so")

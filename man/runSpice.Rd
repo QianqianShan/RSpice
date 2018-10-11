@@ -4,7 +4,11 @@
 \alias{runSpice}
 \title{Command to run Spice.}
 \usage{
-runSpice()
+runSpice(bgrun = TRUE)
+}
+\arguments{
+\item{bgrun}{logical; indicator of if the simulation is run in main thread 
+or background thread.}
 }
 \description{
 Command to run Spice.

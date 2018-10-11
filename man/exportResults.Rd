@@ -4,15 +4,11 @@
 \alias{exportResults}
 \title{Export the output from Spice}
 \usage{
-exportResults(location, data)
+exportResults(location)
 }
 \arguments{
-\item{location}{the location of the output we want to export,
+\item{location}{a vector of the location(s) of the output we want to export,
 i.e. the location-th vector name from the getlength function.}
-
-\item{data}{a list of double values (0 by default)which has the
-same length with the output we want to export, so R can copy
-the output to this list.}
 }
 \value{
 the list of the output we specified.

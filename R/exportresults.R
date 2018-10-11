@@ -1,15 +1,20 @@
 #' Export the output from Spice
 #'
-#' @param location the location of the output we want to export,
+#' @param location a vector of the location(s) of the output we want to export,
 #'  i.e. the location-th vector name from the getlength function.
-#' @param data a list of double values (0 by default)which has the
-#'  same length with the output we want to export, so R can copy
-#'  the output to this list.
 #' @return the list of the output we specified.
 #' @useDynLib RSpice
 #' @export
-exportResults <- function(location, data) {
-    .C("ExportResults", as.integer(location - 
-        1), as.double(data))
+exportResults <- function(location) {
+  if (any(location <= 0)) {
+    stop("location argument must be positive integers.")
+  }
+   len <- getLength()
+   result <- matrix(NA, nrow = length(location), ncol = len)
+   rownames(result) <- location
+   for (i in 1:length(location)) {
+     result[i, ] <- .C("ExportResults", as.integer(location[i] - 1), as.double(double(len)))[[2]]
+   } 
+ return(result)
 }
 

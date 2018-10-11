@@ -5,8 +5,7 @@
 #' \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
 #' @param altercmd a vector of parameters which to be sent to Ngspice for
 #'                 one time change.
-#' @return 1. 'Alter command sent to ngspice' if the parameters are altered
-#'successfully; 2. paramters we sent down.
+## @return 
 # #' @examples #'
 # alterparameter(2,as.character('alter
 # c1=2','alter r1=2'))

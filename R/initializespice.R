@@ -20,7 +20,7 @@ initializeSpice <- function(dylibpath, dylibname) {
         dllrawpath <- c(charToRaw(dylibpath), 
             as.raw(0))
     }
-    dllraw <- c(charToRaw(dllname), as.raw(0))
+    dllraw <- c(charToRaw(dylibname), as.raw(0))
     initial <- .C("InitializeSpice", dllrawpath, 
         dllraw)
 }

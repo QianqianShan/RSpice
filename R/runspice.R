@@ -1,8 +1,10 @@
 #' Command to run Spice.
 
+#' @param bgrun logical; indicator of if the simulation is run in main thread 
+#'               or background thread. 
 #' @useDynLib RSpice
 #' @export
-runSpice <- function() {
-    res <- .C("RunSpice")
+runSpice <- function(bgrun = TRUE) {
+    res <- .C("RunSpice", as.integer(bgrun))
     invisible(res)
 }

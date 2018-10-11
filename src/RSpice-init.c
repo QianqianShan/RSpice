@@ -13,7 +13,8 @@ extern void GetLength(void *);
 extern void GetPlotNames(void *);
 extern void GetVectorLength(void *);
 extern void InitializeSpice(void *, void *);
-extern void RunSpice();
+extern void RunSpice(void *);
+extern void SpiceCommand(void *, void *);
 extern void UnloadNgspice();
 
 static const R_CMethodDef CEntries[] = {
@@ -24,7 +25,8 @@ static const R_CMethodDef CEntries[] = {
     {"GetPlotNames",    (DL_FUNC) &GetPlotNames,    1},
     {"GetVectorLength", (DL_FUNC) &GetVectorLength, 1},
     {"InitializeSpice", (DL_FUNC) &InitializeSpice, 2},
-    {"RunSpice",        (DL_FUNC) &RunSpice,        0},
+    {"RunSpice",        (DL_FUNC) &RunSpice,        1},
+    {"SpiceCommand",    (DL_FUNC) &SpiceCommand,    2},
     {"UnloadNgspice",   (DL_FUNC) &UnloadNgspice,   0},
     {NULL, NULL, 0}
 };
@@ -34,4 +36,3 @@ void R_init_RSpice(DllInfo *dll)
     R_registerRoutines(dll, CEntries, NULL, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
-

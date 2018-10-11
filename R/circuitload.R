@@ -10,5 +10,6 @@ circuitLoad <- function(circarray) {
     circarraynull <- c(circarray, "NULL")
     out <- .C("CircuitLoad", as.character(circarraynull), 
         as.integer(length(circarraynull)))
+    invisible(out)
 }
 
