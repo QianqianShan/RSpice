@@ -10,11 +10,9 @@
 getPlotNames <- function() {
     length <- .C("GetVectorLength", as.integer(0))[[1]]
     res <- unlist(.C("GetPlotNames", as.character(character(length))))
-    # Re-write the names into a data frame
-    # for easier check of names and their
-    # order
-    Names <- data.frame(c(1:length(res)), 
-        res)
+    # Re-write the names into a data frame for
+    # easier check of names and their order
+    Names <- data.frame(c(1:length(res)), res)
     names(Names) <- c("location", "Name")
     return(Names)
 }
