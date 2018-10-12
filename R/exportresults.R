@@ -11,15 +11,16 @@ exportResults <- function(location) {
     }
     len <- getLength()
     if (len > 0) {
-      # if there are results returned 
-      result <- matrix(NA, nrow = length(location), 
-                       ncol = len)
-      rownames(result) <- location
-      for (i in 1:length(location)) {
-        result[i, ] <- .C("ExportResults", 
-                          as.integer(location[i] - 1), as.double(double(len)))[[2]]
-      }
-      return(result)
+        # if there are results returned
+        result <- matrix(NA, nrow = length(location), 
+            ncol = len)
+        rownames(result) <- location
+        for (i in 1:length(location)) {
+            result[i, ] <- .C("ExportResults", 
+                as.integer(location[i] - 1), 
+                as.double(double(len)))[[2]]
+        }
+        return(result)
     }
 }
 

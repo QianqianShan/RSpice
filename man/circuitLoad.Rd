@@ -4,10 +4,13 @@
 \alias{circuitLoad}
 \title{Load specified circuit and send it to Spice.}
 \usage{
-circuitLoad(circarray)
+circuitLoad(circarray, listing = TRUE)
 }
 \arguments{
-\item{circarray}{a list of character strings which are used to define
+\item{circarray}{a list of character strings which are used to define}
+
+\item{listing}{logical; if TRUE, print a listing of the current circuit after
+               loading.
 the circuit.}
 }
 \value{

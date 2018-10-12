@@ -11,6 +11,12 @@
 #' @useDynLib RSpice
 #' @export
 alterParameter <- function(altercmd) {
+    if (altercmd != tolower(altercmd)) {
+        cat("altercmd contains upper case letters, use spiceCommand(\"listing\")
+ to check the identifier and parameter names. \n altercmd has been converted
+         to only include lower cases. \n")
+        altercmd <- tolower(altercmd)
+    }
     res <- .C("AlterParameter", as.integer(length(altercmd)), 
         as.character(altercmd))[[]]
     invisible(res)

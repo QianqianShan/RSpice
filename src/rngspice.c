@@ -78,7 +78,7 @@ static char errstr[1280];
   (These don't seem to be used anymore  */
 bool will_unload = false;
 //bool error_ngspice = false;
-static bool has_break = false;
+//static bool has_break = false;
 
 
 /* The header file sharedspice.h contains the sources for ngspice
@@ -97,12 +97,14 @@ SRWLOCK lock; /* locks cv and no_bg */
 void _stdcall InitializeConditionVariable(PCONDITION_VARIABLE ConditionVariable);
 void _stdcall InitializeSRWLock(PSRWLOCK);
 
+
+/*
 static void initialize_cond_variable(void)
 {
     InitializeConditionVariable(&cv);
     InitializeSRWLock(&lock);
 }
-
+*/
 
 
 void _stdcall AcquireSRWLockShared(PSRWLOCK SRWLock);
@@ -142,12 +144,13 @@ static inline void set_no_bg(bool val)
 pthread_mutex_t lock;
 pthread_cond_t cv;
 
+/*
 static void initialize_cond_variable(void)
 {
     pthread_mutex_init(&lock,NULL);
     pthread_cond_init(&cv,NULL);
 }
-
+*/
 static inline void wait_no_bg(void)
 {
     pthread_mutex_lock(&lock);
@@ -188,7 +191,7 @@ void GetPlotNames(char **name);
 void GetLength(int *size);
 
 /* Function to load the circuit*/
-void CircuitLoad(char **circarray, int *len);
+void CircuitLoad(char **circarray, int *len, int *list);
 
 /* Function to alter model parameters*/
 void AlterParameter(int *nalter, char **parameter);
@@ -312,9 +315,9 @@ void InitializeSpice(char *dllpath,char *dllname)
 
 
 /* Function to load the circuit */
-void CircuitLoad(char **circarray, int *len)
+void CircuitLoad(char **circarray, int *len, int *list)
 {
-    if (ngSpice_Circ_handle != NULL)
+    if (ngdllhandle != NULL)
     {
         /* Convert the last entry of the circarray to NULL(required by NgSpice)
         which can be recognized in C, not the character string "NULL"
@@ -324,11 +327,17 @@ void CircuitLoad(char **circarray, int *len)
         ((int * (*)(char**)) ngSpice_Circ_handle)(circarray);
         /* Change the last entry back to a string so R can copy it back without error message*/
         circarray[(*len - 1)] = "NULL";
+
+   if (*list == 1) {
+            ((int * (*)(char*)) ngSpice_Command_handle)("listing");
+}
+
     }
     else
     {
         Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
     }
+
 
 }
 
@@ -511,7 +520,7 @@ void GetLength(int *size)
         /* read current plot while simulation continues */
         curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
         vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-        int cnt;
+      //  int cnt;
         /*for (cnt = 0; vecarray[cnt] != NULL; cnt++) {
         	printf("Vector name: %s\n", vecarray[cnt]);
         }
@@ -539,7 +548,7 @@ void UnloadNgspice()
     //int *ret;
     if (ngdllhandle)
     {
-        Rprintf("Unload ngspice now\n");
+      //  Rprintf("Unload ngspice now\n");
         //ret = ( (int * (*)(char*)) ngSpice_Command_handle)("quit");
         //((int * (*)(char*)) ngSpice_Command_handle)("quit");
         //Rprintf("Quit successfully\n");
@@ -566,9 +575,10 @@ void UnloadNgspice()
 int
 ng_initdata(pvecinfoall intdata, int ident, void* userdata)
 {
+
+#ifdef DEBUG
     int i;
     int vn = intdata->veccount;
-#ifdef DEBUG
     for (i = 0; i < vn; i++)
     {
         printf("Vector: %s\n", intdata->vecs[i]->vecname);

@@ -1,4 +1,3 @@
-
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
@@ -8,7 +7,7 @@
 
 /* .C calls */
 extern void AlterParameter(void *, void *);
-extern void CircuitLoad(void *, void *);
+extern void CircuitLoad(void *, void *, void *);
 extern void ExportResults(void *, void *);
 extern void GetLength(void *);
 extern void GetPlotNames(void *);
@@ -20,7 +19,7 @@ extern void UnloadNgspice();
 
 static const R_CMethodDef CEntries[] = {
     {"AlterParameter",  (DL_FUNC) &AlterParameter,  2},
-    {"CircuitLoad",     (DL_FUNC) &CircuitLoad,     2},
+    {"CircuitLoad",     (DL_FUNC) &CircuitLoad,     3},
     {"ExportResults",   (DL_FUNC) &ExportResults,   2},
     {"GetLength",       (DL_FUNC) &GetLength,       1},
     {"GetPlotNames",    (DL_FUNC) &GetPlotNames,    1},

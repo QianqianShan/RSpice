@@ -9,15 +9,17 @@
 #' @export
 getPlotNames <- function() {
     length <- .C("GetVectorLength", as.integer(0))[[1]]
-    if (length == 0) stop("No output from Ngspice.")
+    if (length == 0) 
+        stop("No output from Ngspice.")
     res <- unlist(.C("GetPlotNames", as.character(character(length))))
     # Re-write the names into a data frame for
     # easier check of names and their order
     if (length(res) > 0) {
-    Names <- data.frame(c(1:length(res)), res)
-    names(Names) <- c("location", "Name")
-    return(Names)
+        Names <- data.frame(c(1:length(res)), 
+            res)
+        names(Names) <- c("location", "Name")
+        return(Names)
     } else {
-      stop("Error! No output names from Ngspice")
+        stop("Error! No output names from Ngspice")
     }
 }
