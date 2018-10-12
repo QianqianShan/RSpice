@@ -4,3 +4,5 @@
 *.o
 *.so
 *.dll
+!*ngspice.so
+!ngspice.dll
