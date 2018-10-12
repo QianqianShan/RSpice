@@ -11,7 +11,10 @@ alterParameter(altercmd)
 one time change.}
 }
 \description{
-#Change the device or model parameters of the loaded circuit. See more
+Change the device or model parameters of the loaded circuit. See more
 details on Chapter 17 and 19 on how to alter the parameters in 
 \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
+}
+\examples{
+\dontrun{alterParameter("alter r1=500")}
 }

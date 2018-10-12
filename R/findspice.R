@@ -1,9 +1,16 @@
 #' Function to find if shared Ngspice library exists and return the path if Yes.
 #'
-#' @param dylibpath the path of the Ngspice shared library. 
-#' @param dylibname the name of the Ngspice shared library.  
+#' @param dylibpath a character string with the general path of the Ngspice shared library. If NULL, the 
+#'        function will search across the computer, which is not 
+#'        recommended as it may search some directories that requires
+#'        root/admin authorization. If a path is specified, the search will be 
+#'        conducted under the path recursively.  
+#' @param dylibname a character string with the name of the Ngspice shared library.  
 #' @return The function will stop if no shared library were found, and the first
 #'         available file path containing the shared library will be returned.
+#' @examples 
+#' \dontrun{findSpice("/path/to/be/searched", "ngspice.dll")}
+#' \dontrun{findSpice("/path/to/be/searched", "libngspice.so")}
 #' @export
 
 findSpice <- function(dylibpath, dylibname) {

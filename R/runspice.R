@@ -1,4 +1,4 @@
-#' Command to run Spice.
+#' Command to run Ngspice.
 
 #' @param bgrun logical; indicator of if the simulation is run in main thread 
 #'               or background thread. 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/runspice.R
 \name{runSpice}
 \alias{runSpice}
-\title{Command to run Spice.}
+\title{Command to run Ngspice.}
 \usage{
 runSpice(bgrun = TRUE)
 }
@@ -11,5 +11,5 @@ runSpice(bgrun = TRUE)
 or background thread.}
 }
 \description{
-Command to run Spice.
+Command to run Ngspice.
 }

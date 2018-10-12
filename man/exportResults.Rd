@@ -2,7 +2,7 @@
 % Please edit documentation in R/exportresults.R
 \name{exportResults}
 \alias{exportResults}
-\title{Export the output from Spice}
+\title{Export the output from Ngspice}
 \usage{
 exportResults(location)
 }
@@ -14,5 +14,8 @@ i.e. the location-th vector name from the getlength function.}
 the list of the output we specified.
 }
 \description{
-Export the output from Spice
+Export the output from Ngspice
+}
+\examples{
+\dontrun{exportResults(c(1, 2, 4))}
 }

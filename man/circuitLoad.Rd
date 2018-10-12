@@ -2,7 +2,7 @@
 % Please edit documentation in R/circuitload.R
 \name{circuitLoad}
 \alias{circuitLoad}
-\title{Load specified circuit and send it to Spice.}
+\title{Load specified circuit and send it to Ngspice.}
 \usage{
 circuitLoad(circarray, listing = TRUE)
 }
@@ -17,5 +17,9 @@ the circuit.}
 the same circuit as the one loaded.
 }
 \description{
-Load specified circuit and send it to Spice.
+Load specified circuit and send it to Ngspice.
+}
+\examples{
+\dontrun{circuitload(c(".title test", "R1 1 2 5k", "R2 2 0 1k",
+           "VDD 0 1 DC 10", ".op", ".end"))}
 }

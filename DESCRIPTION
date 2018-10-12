@@ -6,8 +6,8 @@ Authors@R: c(
     person("Stephen D.", "Holland", email = "sdh4@iastate.edu", role = c("aut")),
     person("William Q.", "Meeker", email = "wqmeeker@iastate.edu", role = c("aut")))
 Maintainer: Qianqian Shan <qianqianshan.am@gmail.com>	
-Description: An implementation of the interface to allow users to run Ng-spice
-     in R via the shared library of Ng-spice. It provides functions to control
+Description: An implementation of the interface to allow users to run Ngspice
+     in R via the shared library of Ngspice. It provides functions to control
      the simulator and read the feedback from Ngspice to R. By using this 
      package, it is possible to save and analyze the outputs from Ngspice
      in R.  

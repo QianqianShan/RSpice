@@ -1,4 +1,3 @@
-
 #' unload NgSpice
 #' @useDynLib RSpice
 #' @export

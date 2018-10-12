@@ -15,3 +15,6 @@ one time change.}
 details on Chapter 17 and 19 on how to alter the parameters in 
 \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
 }
+\examples{
+\dontrun{spiceCommand("listing")}                 
+}
