@@ -1,10 +1,12 @@
-#' Export the output from Ngspice
+#' Export the Output Values from Ngspice
 #'
 #' @param location a vector of the location(s) of the output we want to export,
-#'  i.e. the location-th vector name from the getlength function.
-#' @return the list of the output we specified.
+#'  i.e. the location-th output from the \code{getPlotNames()}.
 #' @examples 
-#' \dontrun{exportResults(c(1, 2, 4))}
+#' \dontrun{
+#' # Export the output values at location 1, 2 and 4. 
+#' exportResults(c(1, 2, 4))
+#' }
 #' @useDynLib RSpice
 #' @export
 exportResults <- function(location) {
@@ -13,7 +15,7 @@ exportResults <- function(location) {
     }
     len <- getLength()
     if (max(location) > len) {
-      stop("location out of range.")
+        stop("location out of range.")
     }
     if (len > 0) {
         # if there are results returned
@@ -22,8 +24,7 @@ exportResults <- function(location) {
         rownames(result) <- location
         for (i in 1:length(location)) {
             result[i, ] <- .C("ExportResults", 
-                as.integer(location[i] - 1), 
-                as.double(double(len)))[[2]]
+                as.integer(location[i] - 1), as.double(double(len)))[[2]]
         }
         return(result)
     }

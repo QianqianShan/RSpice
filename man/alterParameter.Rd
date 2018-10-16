@@ -2,7 +2,7 @@
 % Please edit documentation in R/alterparameter.R
 \name{alterParameter}
 \alias{alterParameter}
-\title{Change the device or model parameters of the loaded circuit.}
+\title{Change a Device or Model Parameter}
 \usage{
 alterParameter(altercmd)
 }
@@ -11,10 +11,12 @@ alterParameter(altercmd)
 one time change.}
 }
 \description{
-Change the device or model parameters of the loaded circuit. See more
+Change the device or model parameter of the loaded circuit. See more
 details on Chapter 17 and 19 on how to alter the parameters in 
-\url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
+\url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}.
 }
 \examples{
-\dontrun{alterParameter("alter r1=500")}
+ \dontrun{
+ # alter the resistance to 500 Ohm for a resistor device r1.  
+ alterParameter('alter r1=500')}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/circuitload.R
 \name{circuitLoad}
 \alias{circuitLoad}
-\title{Load specified circuit and send it to Ngspice.}
+\title{Load Specified Circui to Ngspice}
 \usage{
 circuitLoad(circarray, listing = TRUE)
 }
@@ -10,16 +10,21 @@ circuitLoad(circarray, listing = TRUE)
 \item{circarray}{a list of character strings which are used to define}
 
 \item{listing}{logical; if TRUE, print a listing of the current circuit after
-               loading.
-the circuit.}
+loading the circuit.}
 }
 \value{
-the same circuit as the one loaded.
+The outputs from printf, fprintf and fputs of Ngspice simulator. The
+        listing of the current circuit will be returned if \code{listing = TRUE}.
 }
 \description{
 Load specified circuit and send it to Ngspice.
 }
 \examples{
-\dontrun{circuitload(c(".title test", "R1 1 2 5k", "R2 2 0 1k",
-           "VDD 0 1 DC 10", ".op", ".end"))}
+\dontrun{
+# Load a simple circtui with name test, the resistor R1 is 5k Ohm and 
+# connected to node 1 and 2, R2 is 1k Ohm and connected to node 2 and
+# 0, and a voltage source VDD with 10V between node 0 and 1. A point 
+# analysis is performed.   
+circuitload(c('.title test', 'R1 1 2 5k', 'R2 2 0 1k',
+           'VDD 0 1 DC 10', '.op', '.end'))}
 }

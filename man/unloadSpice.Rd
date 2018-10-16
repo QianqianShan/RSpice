@@ -2,10 +2,10 @@
 % Please edit documentation in R/unloadspice.R
 \name{unloadSpice}
 \alias{unloadSpice}
-\title{unload NgSpice}
+\title{Unload NgSpice}
 \usage{
 unloadSpice()
 }
 \description{
-unload NgSpice
+Unload the Ngspice shared library.
 }

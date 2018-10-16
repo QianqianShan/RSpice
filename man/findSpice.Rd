@@ -2,7 +2,7 @@
 % Please edit documentation in R/findspice.R
 \name{findSpice}
 \alias{findSpice}
-\title{Function to find if shared Ngspice library exists and return the path if Yes.}
+\title{Find The Path of The Ngspice Shared Library}
 \usage{
 findSpice(dylibpath, dylibname)
 }
@@ -11,18 +11,24 @@ findSpice(dylibpath, dylibname)
 function will search across the computer, which is not 
 recommended as it may search some directories that requires
 root/admin authorization. If a path is specified, the search will be 
-conducted under the path recursively.}
+conducted under the path recursively with a faster speed.}
 
-\item{dylibname}{a character string with the name of the Ngspice shared library.}
+\item{dylibname}{a character string with the name of the Ngspice shared library,
+the extension of the shared library is added by R automatically.}
 }
 \value{
-The function will stop if no shared library were found, and the first
+The function will stop if no shared library is found, and the first
         available file path containing the shared library will be returned.
 }
 \description{
-Function to find if shared Ngspice library exists and return the path if Yes.
+Find if the specified Ngspice shared library exists and return the first
+ path if there the shared library exists in multiple paths.
 }
 \examples{
-\dontrun{findSpice("/path/to/be/searched", "ngspice.dll")}
-\dontrun{findSpice("/path/to/be/searched", "libngspice.so")}
+\dontrun{
+ # under windows os
+  findSpice(dylibpath = 'C:/Users', dylibname = 'ngspice')
+ # under *unix os
+ findSpice(dylibpath = '/home/user', dylibname = 'libngspice')}
+ 
 }

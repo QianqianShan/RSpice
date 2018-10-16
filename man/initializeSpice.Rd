@@ -2,18 +2,24 @@
 % Please edit documentation in R/initializespice.R
 \name{initializeSpice}
 \alias{initializeSpice}
-\title{Initialize Ngspice.}
+\title{Initialize Ngspice}
 \usage{
 initializeSpice(dylibpath, dylibname)
 }
 \arguments{
-\item{dylibpath}{the path of the .dll/.so Ngspice shared library file}
+\item{dylibpath}{the path of the .Ngspice shared library file.}
 
-\item{dylibname}{the name of the shared library without extensions}
+\item{dylibname}{the name of the Ngspice shared library without extensions.}
+}
+\value{
+NULL.
 }
 \description{
-Initialize Ngspice.
+Load the Ngspice shared library and initialize Ngspice with the exported
+ functions. See Chapter 19 of the Ngspice manual for more details.
 }
 \examples{
-\dontrun{initializeSpice(findSpice(), 'libngspice.so')}
+\dontrun{
+# Initialize Ngspice.
+initializeSpice(dylibpath = findSpice(), dylibname = 'libngspice.so')}
 }

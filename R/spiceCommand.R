@@ -1,14 +1,23 @@
-#' Change the device or model parameters of the loaded circuit.
+#' Send Command to Ngspice
 #'
-#'#Change the device or model parameters of the loaded circuit. See more
-#' details on Chapter 17 and 19 on how to alter the parameters in 
+#' Send a valid command from caller
+#'  to ngspice.dll. See more control or interactive commands details in
 #' \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
 #' @param cmd a vector of commands which to be sent to Ngspice for
 #'                 one time change.
-#' @examples \dontrun{spiceCommand("listing")}                 
+#' @examples 
+#' \dontrun{
+#' 
+#' # to print a listing of the current circuit
+#' 
+#' spiceCommand("listing")}                 
 #' @useDynLib RSpice
 #' @export
 spiceCommand <- function(cmd) {
+    if (cmd != tolower(cmd)) {
+        cat("cmd contains upper case letters, use spiceCommand(\"listing\") to check the identifier and parameter names. \n altercmd has been converted to only include lower cases. \n")
+        cmd <- tolower(cmd)
+    }
     res <- .C("SpiceCommand", as.integer(length(cmd)), 
         as.character(cmd))[[]]
     invisible(res)

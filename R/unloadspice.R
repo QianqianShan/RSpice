@@ -1,4 +1,6 @@
-#' unload NgSpice
+#' Unload NgSpice
+#' 
+#' Unload the Ngspice shared library.
 #' @useDynLib RSpice
 #' @export
 unloadSpice <- function() {

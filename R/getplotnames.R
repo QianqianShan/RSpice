@@ -1,10 +1,17 @@
-#' Get the all the output names 
+#' Read All Output Names from Ngspice
 #' 
-#' \code{getPlotNames} returns the ouput names from Ngspice after running a 
+#' Read the available output names with their corresponding order from 
+#' Ngspice after the simulation of a circuit.  
+#' 
+#' \code{getPlotNames} returns the output names from Ngspice after running a 
 #'         circuit simulation.
 #' @return A data fram with two columns: location and Name. The location column
 #'         shows the order of output names obtained from Ngspice and the Name 
 #'         column shows the corresponding output names returned from Ngspice.
+#' @examples 
+#' \dontrun{
+#' getPlotNames()
+#' }
 #' @useDynLib RSpice
 #' @export
 getPlotNames <- function() {

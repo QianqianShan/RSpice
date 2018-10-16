@@ -2,7 +2,7 @@
 % Please edit documentation in R/runspice.R
 \name{runSpice}
 \alias{runSpice}
-\title{Command to run Ngspice.}
+\title{Run Ngspice.}
 \usage{
 runSpice(bgrun = TRUE)
 }
@@ -10,6 +10,18 @@ runSpice(bgrun = TRUE)
 \item{bgrun}{logical; indicator of if the simulation is run in main thread 
 or background thread.}
 }
+\value{
+Simulation status obtained from Ngspice is printed.
+}
 \description{
-Command to run Ngspice.
+Run Ngspice.
+}
+\examples{
+\dontrun{
+# Run the simulation in main thread
+runSpice()
+
+# Run the simulation in background thread 
+runSpice(bgrun = TRUE) 
+} 
 }

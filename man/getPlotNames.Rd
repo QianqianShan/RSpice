@@ -2,7 +2,7 @@
 % Please edit documentation in R/getplotnames.R
 \name{getPlotNames}
 \alias{getPlotNames}
-\title{Get the all the output names}
+\title{Read All Output Names from Ngspice}
 \usage{
 getPlotNames()
 }
@@ -12,6 +12,15 @@ A data fram with two columns: location and Name. The location column
         column shows the corresponding output names returned from Ngspice.
 }
 \description{
-\code{getPlotNames} returns the ouput names from Ngspice after running a 
+Read the available output names with their corresponding order from 
+Ngspice after the simulation of a circuit.
+}
+\details{
+\code{getPlotNames} returns the output names from Ngspice after running a 
         circuit simulation.
+}
+\examples{
+\dontrun{
+getPlotNames()
+}
 }

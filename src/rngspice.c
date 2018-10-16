@@ -277,6 +277,12 @@ void InitializeSpice(char *dllpath,char *dllname)
         //exit(1);
         //      error();
     }
+
+    setenv("SPICE_SCRIPTS", dllpath, 1); // Create environment variable
+
+    Rprintf("spinit file is loaded from :\n");
+    system("echo $SPICE_SCRIPTS"); // Outputs "hello"
+
     ngSpice_Init_handle = dlsym(ngdllhandle, "ngSpice_Init");
     errmsg = dlerror();
     if (errmsg)
@@ -310,6 +316,7 @@ void InitializeSpice(char *dllpath,char *dllname)
     ((int * (*)(SendChar*, SendStat*, ControlledExit*, SendData*, SendInitData*,
                 BGThreadRunning*, void*)) ngSpice_Init_handle)(ng_getchar, ng_getstat,
                         ng_exit, NULL, ng_initdata, ng_thread_runs, NULL);
+    unsetenv("SPICE_SCRIPTS"); 
 }
 
 
@@ -553,7 +560,7 @@ void UnloadNgspice()
         //((int * (*)(char*)) ngSpice_Command_handle)("quit");
         //Rprintf("Quit successfully\n");
         dlclose(ngdllhandle);
-        Rprintf("Unloaded\n\n");
+        Rprintf("Ngspice Shared Library Unloaded\n\n");
         ngdllhandle = NULL;
       //  funptr_t ngSpice_Init_handle = NULL;
        // int(*ngSpice_Command_handle)(char*) = NULL;

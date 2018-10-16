@@ -2,20 +2,20 @@
 % Please edit documentation in R/exportresults.R
 \name{exportResults}
 \alias{exportResults}
-\title{Export the output from Ngspice}
+\title{Export the Output Values from Ngspice}
 \usage{
 exportResults(location)
 }
 \arguments{
 \item{location}{a vector of the location(s) of the output we want to export,
-i.e. the location-th vector name from the getlength function.}
-}
-\value{
-the list of the output we specified.
+i.e. the location-th output from the \code{getPlotNames()}.}
 }
 \description{
-Export the output from Ngspice
+Export the Output Values from Ngspice
 }
 \examples{
-\dontrun{exportResults(c(1, 2, 4))}
+\dontrun{
+# Export the output values at location 1, 2 and 4. 
+exportResults(c(1, 2, 4))
+}
 }

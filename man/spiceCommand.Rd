@@ -2,7 +2,7 @@
 % Please edit documentation in R/spiceCommand.R
 \name{spiceCommand}
 \alias{spiceCommand}
-\title{Change the device or model parameters of the loaded circuit.}
+\title{Send Command to Ngspice}
 \usage{
 spiceCommand(cmd)
 }
@@ -11,10 +11,14 @@ spiceCommand(cmd)
 one time change.}
 }
 \description{
-#Change the device or model parameters of the loaded circuit. See more
-details on Chapter 17 and 19 on how to alter the parameters in 
+Send a valid command from caller
+ to ngspice.dll. See more control or interactive commands details in
 \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
 }
 \examples{
-\dontrun{spiceCommand("listing")}                 
+\dontrun{
+
+# to print a listing of the current circuit
+
+spiceCommand("listing")}                 
 }

@@ -6,3 +6,4 @@
 *.dll
 !*ngspice.so
 !ngspice.dll
+inst/doc
