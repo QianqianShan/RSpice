@@ -3,3 +3,10 @@
 .git
 ngspice.dll
 libngspice.so
+dll64/
+dll32/
+so64/
+so32/
+vignettes-old/
+^README\.Rmd$
+^README-.*\.png$

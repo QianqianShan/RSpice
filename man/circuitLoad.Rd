@@ -2,7 +2,7 @@
 % Please edit documentation in R/circuitload.R
 \name{circuitLoad}
 \alias{circuitLoad}
-\title{Load Specified Circui to Ngspice}
+\title{Load Specified Circuit to Ngspice}
 \usage{
 circuitLoad(circarray, listing = TRUE)
 }

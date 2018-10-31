@@ -74,7 +74,7 @@ findSpice <- function(dylibpath, dylibname) {
                 
               # run windows command line to search the accruate directory
                 file.paths <- system(paste0("cmd.exe /c dir ", 
-                  "\"", dylibpath, "\\\\", dylibname, 
+                  "\"", dylibpath, "\\", dylibname, 
                   .Platform$dynlib.ext, "\"", 
                   " /b /s"), intern = TRUE)
             } else {

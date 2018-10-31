@@ -1,4 +1,12 @@
-/* NOTE *** Must credit ngspice.dll example ***/
+/* C functions for RSpice package */
+/* Copyright 2018 Qianqian Shan */
+/* The code is written based on the two console application examples of Ngspice in C from Chapter 19.5 of 
+the ngspice manual at http://ngspice.sourceforge.net/docs/ngspice-manual.pdf .  
+
+The header file sharedspice.h by 2013, Holger Vogt is also included with Modified BSD license */
+
+/* Modified BSD license */
+
 
 #include <R.h>
 #include <stdio.h>
@@ -6,11 +14,12 @@
 #include <signal.h>
 #include <string.h>
 #include <ctype.h>
-//#include <errno.h>
+
 
 /*WIN32 is defined on windows operating systems (32-bit and 64-bit)*/
 #ifdef WIN32
 #include <windows.h>
+#include <winbase.h>
 #else /* not WINDOWS */
 
 #include <dlfcn.h>
@@ -23,31 +32,23 @@
 /*Define a CONSTANT variable*/
 #define RTLD_NOW	2
 
+
+/* In WIN, the FARPROC declaration indicates a callback
+function that has an unspecified parameter list. */
 typedef FARPROC funptr_t;
 
-/* *dlopen,dlsym,dlclose,*dlerror are functions used by NgSpice initialization and error handling*/
+/* *dlopen, dlsym, dlclose, *dlerror are functions used by NgSpice initialization and error handling*/
 void *dlopen(const char *, int);
 funptr_t dlsym(void *, const char *);
 int dlclose(void *);
 char *dlerror(void);
 #define strdup _strdup
-#define PATH_SEPARATOR "\\"
-#define LIB_PREFIX ""
 
 static inline void usleep(int us)
 {
     if (us >= 1000) Sleep(us/1000);
     else Sleep(1);
 }
-
-/*typedef is a facility to create new data type names,
-typedef FARPROC funptr_t makes the name funptr_t a
-synonym for FARPROC. */
-
-/* In WIN32, the FARPROC declaration indicates a callback
-function that has an unspecified parameter list. */
-
-//typedef FARPROC funptr_t;
 
 #else /* not WIN32 */
 
@@ -56,9 +57,6 @@ static inline void Sleep(int ms)
     usleep(ms*1000);
 }
 
-#define PATH_SEPARATOR "/"
-
-#define LIB_PREFIX "lib"
 
 typedef int *(*funptr_t)();
 
@@ -71,11 +69,10 @@ typedef int bool;
 
 
 /*Declare the memory for error string, which will be useful for error handling
-when initiazing ngspice and when loading the dll  */
+when initiazing ngspice and loading the dll  */
 static char errstr[1280];
 
-/*Declare and initialize global variables
-  (These don't seem to be used anymore  */
+/*Declare and initialize global variables (These don't seem to be used anymore  */
 bool will_unload = false;
 //bool error_ngspice = false;
 //static bool has_break = false;
@@ -113,6 +110,8 @@ BOOL _stdcall SleepConditionVariableSRW(PCONDITION_VARIABLE ConditionVariable,
 
 void _stdcall ReleaseSRWLockShared(PSRWLOCK SRWLock);
 
+
+/* Functions to acquire/lock/release slim reader/writer (SRW) lock to make sure the simulation ngspice has beed done before returning the simulation results  */
 static inline void wait_no_bg(void)
 {
     AcquireSRWLockShared(&lock);
@@ -172,37 +171,31 @@ static inline void set_no_bg(bool val)
 
 #endif
 
+/*Declarations of functions which will be called by R. Functions need to be 'void' type in order to be called by R. */
 
-
-/*Declarations of functions which will be called by R
-
-Functions need to be 'void' type in order to be called by R. */
-
-/*Function to load the Ngspice shared library, and initialize the handles to be used */
+/*Function to load the Ngspice shared library, and load the functions from shared library */
 void InitializeSpice(char *dllpath,char *dllname);
 
-/* Function to return the length of vector names returned from Ngspice */
+/* Function to return the length of all available output names returned from Ngspice */
 void GetVectorLength(int *length);
 
-/*Function to ask for the variable names which will be returned from NgSpice */
+/*Function to ask for the output names from NgSpice */
 void GetPlotNames(char **name);
 
 /*Function to find the length of the output data.*/
 void GetLength(int *size);
 
-/* Function to load the circuit*/
+/* Function to load a circuit*/
 void CircuitLoad(char **circarray, int *len, int *list);
 
-/* Function to alter model parameters*/
-void AlterParameter(int *nalter, char **parameter);
 
-/* Function to pass a pointer to ngspice and record the results in the pointed memory location*/
+/* Function to read simulation results from Ngspice */
 void ExportResults(int *number, double *data);
 
-/*Function to send 'run' or 'bg_run' command to ngspice.*/
+/*Function get the simulation started by sending 'run' or 'bg_run' command to ngspice.*/
 void RunSpice(int *bg);
 
-/*Function to unload spice when simulation is done*/
+/*Function to unload ngspice shared library*/
 void UnloadNgspice();
 
 
@@ -244,44 +237,34 @@ void *ngdllhandle = NULL;
 
 
 
-/* Function to initialize NgSpice */
-void InitializeSpice(char *dllpath,char *dllname)
+/* Function to initialize NgSpice and load needed functions */
+void InitializeSpice(char *dllpath, char *dllname)
 {
-    char *errmsg = NULL;
-    char *fulldllname;
+	char *errmsg = NULL;
+	char *fulldllname;
 
 
-    fulldllname=calloc(((dllpath != NULL) ? strlen(dllpath):0)+strlen(dllname)+20,1);
-    if (dllpath)
-    {
-        strcat(fulldllname,dllpath);
-        strcat(fulldllname,PATH_SEPARATOR);
-    }
-    //strcat(fulldllname,LIB_PREFIX);
-    strcat(fulldllname,dllname);
+	fulldllname = calloc(((dllpath != NULL) ? strlen(dllpath) : 0) + strlen(dllname) + 20, 1);
+	if (dllpath)
+	{
+		strcat(fulldllname, dllpath);
+	}
 
-    Rprintf("Start loading %s\n",fulldllname);
-    ngdllhandle = dlopen(fulldllname, RTLD_NOW);
-    errmsg = dlerror();
-    if (errmsg)
-        Rprintf("%s\n", errmsg);
-    /* Rprintf("Value of errno: %d\n ", errno);
-     Rprintf("The error message is : %s\n",
-                     strerror(errno)); */
+	strcat(fulldllname, dllname);
 
-    if (ngdllhandle)
-        Rprintf("%s loaded successfully. \n",fulldllname);
-    else
-    {
-        Rprintf("%s not loaded !\n",fulldllname);
-        //exit(1);
-        //      error();
-    }
+	Rprintf("Start loading %s\n", fulldllname);
+	ngdllhandle = dlopen(fulldllname, RTLD_NOW);
+	errmsg = dlerror();
+	if (errmsg)
+		Rprintf("%s\n", errmsg);
 
-    setenv("SPICE_SCRIPTS", dllpath, 1); // Create environment variable
+	if (ngdllhandle)
+		Rprintf("%s loaded successfully. \n", fulldllname);
+	else
+	{
+		Rprintf("%s not loaded !\n", fulldllname);
+	}
 
-    Rprintf("spinit file is loaded from :\n");
-    system("echo $SPICE_SCRIPTS"); // Outputs "hello"
 
     ngSpice_Init_handle = dlsym(ngdllhandle, "ngSpice_Init");
     errmsg = dlerror();
@@ -316,7 +299,7 @@ void InitializeSpice(char *dllpath,char *dllname)
     ((int * (*)(SendChar*, SendStat*, ControlledExit*, SendData*, SendInitData*,
                 BGThreadRunning*, void*)) ngSpice_Init_handle)(ng_getchar, ng_getstat,
                         ng_exit, NULL, ng_initdata, ng_thread_runs, NULL);
-    unsetenv("SPICE_SCRIPTS"); 
+
 }
 
 
@@ -327,8 +310,7 @@ void CircuitLoad(char **circarray, int *len, int *list)
     if (ngdllhandle != NULL)
     {
         /* Convert the last entry of the circarray to NULL(required by NgSpice)
-        which can be recognized in C, not the character string "NULL"
-        we sent down from R */
+        which can be recognized in C, not the character string "NULL" from R */
         circarray[(*len - 1)] = NULL;
         /*Send the circuit to ngspice */
         ((int * (*)(char**)) ngSpice_Circ_handle)(circarray);
@@ -349,25 +331,19 @@ void CircuitLoad(char **circarray, int *len, int *list)
 }
 
 /* Function to first check if the simulation is done and pass a pointer to
-   ngspice and record the results in the pointed memory location*/
+   ngspice to record the results from the pointed memory location*/
 void ExportResults(int *number, double *data)
 {  if (ngdllhandle != NULL)
-   // if ( (ngSpice_AllVecs_handle != NULL) & (ngSpice_CurPlot_handle != NULL) & (ngSpice_AllPlots_handle != NULL) )
     {
         char  *curplot, *vecname;
         int cnt;
-        char **vecarray, **plotnames;
+        char **vecarray;
 
         wait_no_bg();
 
         /* read current plot while simulation continues */
         curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
         vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-        plotnames = ((char ** (*)(char*)) ngSpice_AllPlots_handle)(curplot);
-        for (cnt = 0; plotnames[cnt] != NULL; cnt++)
-        {
-        }
-
         /* get length of the vector */
         char plotvec[256];
         pvector_info myvec;
@@ -375,11 +351,10 @@ void ExportResults(int *number, double *data)
         vecname = vecarray[(*number)];
         /*export the number-th plot data */
         sprintf(plotvec, "%s.%s", curplot, vecname); /*write formatted data into a string*/
-        //Rprintf("plotvec is : %s \n", plotvec);
+
         myvec = ((pvector_info(*)(char*)) ngSpice_GVI_handle)(plotvec);
         veclength = myvec->v_length;
-        /*printf("\nActual length of vector %s is %d\n\n", plotvec, veclength); */
-
+        /* export the data */
         for (cnt = 0; cnt < veclength; cnt++)
         {
             data[cnt] = (myvec->v_realdata)[cnt];
@@ -392,36 +367,12 @@ void ExportResults(int *number, double *data)
 
 }
 
-/* AlterParameter function is used to alter the parameter of the circuit
-for multiple times and for multiple parameters at one time*/
-void AlterParameter(int *nalter, char **parameter)
-{   if (ngdllhandle != NULL)
-   // if (ngSpice_Command_handle != NULL)
-    {
-        int i;
-        char *ptr;
-        for (i = 0; i < (*nalter); i++)
-        {
-            ptr = parameter[i];
-            ((int * (*)(char*)) ngSpice_Command_handle)(ptr);
-#ifdef DEBUG
-            Rprintf("Alter command sent to ngspice\n");
-#endif
-        }
-    }
-    else
-    {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
-    }
-}
 
 
 
-/* AlterParameter function is used to alter the parameter of the circuit
-for multiple times and for multiple parameters at one time*/
+/* SpiceCommand function is used to send a valid command for a circuit to Ngspice*/
 void SpiceCommand(int *n, char **cmd)
 {  if (ngdllhandle != NULL)
-   // if (ngSpice_Command_handle != NULL)
     {
         int i;
         char *ptr;
@@ -441,12 +392,11 @@ void SpiceCommand(int *n, char **cmd)
 }
 
 
-/*RunSpice: function to get the circuit or the circuit with altered parameter(s) started for new simulation */
+/*RunSpice: function to get the circuit simulation started */
 void RunSpice(int *bg)
 { if (ngdllhandle != NULL)
-   // if (ngSpice_Command_handle != NULL)
     {
-        /* Throw out any existing results first */
+        /* Throw out any existing results first to avoid memory leak */
         ((int * (*)(char*)) ngSpice_Command_handle)("destroy all");
         /* Now start the new run */
         if (*bg == 1)
@@ -464,10 +414,9 @@ void RunSpice(int *bg)
     }
 }
 
-/*Function to return the length of the vector names from Ngspice */
+/* Function to return the length of the vector names from Ngspice */
 void GetVectorLength(int *length)
 { if (ngdllhandle != NULL)
-   // if ( (ngSpice_Command_handle != NULL) & (ngSpice_CurPlot_handle != NULL) & (ngSpice_AllVecs_handle != NULL))
     {
         char  *curplot;
         char **vecarray;
@@ -488,10 +437,9 @@ void GetVectorLength(int *length)
 }
 
 
-/*Function to return the vector names of the data we want to save */
+/*Function to return the vector names of the data we want to save and their locations stored in the struct */
 void GetPlotNames(char **name)
 { if (ngdllhandle != NULL)
-   // if ((ngSpice_CurPlot_handle != NULL) & (ngSpice_AllVecs_handle != NULL))
     {
         char  *curplot;
         char **vecarray;
@@ -504,7 +452,6 @@ void GetPlotNames(char **name)
         {
             name[cnt] = vecarray[cnt];
         }
-        // printf("Number of vectors: %d\n", cnt);
     }
     else
     {
@@ -513,27 +460,19 @@ void GetPlotNames(char **name)
 }
 
 
-/*Function to return the length of data we want to save */
+/*Function to return the length of output data at nodes we want to save */
 void GetLength(int *size)
 {   if (ngdllhandle != NULL)
-  //  if ((ngSpice_CurPlot_handle != NULL) & (ngSpice_AllVecs_handle != NULL) & (ngSpice_GVI_handle != NULL))
     {
         char  *curplot, *vecname;
         char **vecarray;
 
         wait_no_bg();
-        // printf("Ready to extract the size of the data \n");
 
         /* read current plot while simulation continues */
         curplot = ((char * (*)()) ngSpice_CurPlot_handle)();
         vecarray = ((char ** (*)(char*)) ngSpice_AllVecs_handle)(curplot);
-      //  int cnt;
-        /*for (cnt = 0; vecarray[cnt] != NULL; cnt++) {
-        	printf("Vector name: %s\n", vecarray[cnt]);
-        }
 
-        printf("Number of vectors: %d\n", cnt);
-        */
         /* get length of first vector */
         char plotvec[256];
         pvector_info myvec;
@@ -554,21 +493,10 @@ void UnloadNgspice()
 {
     //int *ret;
     if (ngdllhandle)
-    {
-      //  Rprintf("Unload ngspice now\n");
-        //ret = ( (int * (*)(char*)) ngSpice_Command_handle)("quit");
-        //((int * (*)(char*)) ngSpice_Command_handle)("quit");
-        //Rprintf("Quit successfully\n");
+    {;
         dlclose(ngdllhandle);
         Rprintf("Ngspice Shared Library Unloaded\n\n");
         ngdllhandle = NULL;
-      //  funptr_t ngSpice_Init_handle = NULL;
-       // int(*ngSpice_Command_handle)(char*) = NULL;
-//int(*ngSpice_Circ_handle)(char **) = NULL;
-      //  funptr_t ngSpice_CurPlot_handle = NULL;
-       // funptr_t ngSpice_AllVecs_handle = NULL;
-      //  funptr_t ngSpice_GVI_handle = NULL;
-      //  funptr_t ngSpice_AllPlots_handle = NULL;
     }
     else
     {
@@ -595,7 +523,6 @@ ng_initdata(pvecinfoall intdata, int ident, void* userdata)
 }
 
 /* Callback function in ngspice to transfer any string created by printf.
-
 Output to stdout in ngspice is preceded by token stdout, same with stderr.*/
 int
 ng_getchar(char* outputreturn, int indent, void* userdata)
@@ -605,7 +532,7 @@ ng_getchar(char* outputreturn, int indent, void* userdata)
 //#endif
     /* set a flag if an error message occurred */
     if (ciprefix("stderr Error:", outputreturn))
-        // error_ngspice = true;
+
         Rprintf("Error in Ngspice.\n");
     return 0;
 }
@@ -621,7 +548,7 @@ int ng_getstat(char* outputreturn, int ident, void* userdata)
 }
 
 /* Callback function called from ngspice upon starting (returns true) or
-leaving (returns false) the bg thread. */
+leaving (returns false) the thread. */
 int
 ng_thread_runs(bool noruns, int ident, void* userdata)
 {
@@ -636,7 +563,7 @@ ng_thread_runs(bool noruns, int ident, void* userdata)
 }
 
 
-/* Callback function called from bg thread in ngspice if funtion controlled_exit()
+/* Callback function called in ngspice if funtion controlled_exit()
 is hit. Do not exit, but unload ngspice. */
 int
 ng_exit(int exitstatus, bool immediate, bool quitexit, int ident, void* userdata)
@@ -665,6 +592,7 @@ ng_exit(int exitstatus, bool immediate, bool quitexit, int ident, void* userdata
 
 
 #ifdef WIN32
+
 
 void *dlopen(const char *name, int type)
 {

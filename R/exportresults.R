@@ -13,8 +13,9 @@ exportResults <- function(location) {
     if (any(location <= 0)) {
         stop("location argument must be positive integers.")
     }
+    loclen <- nrow(getPlotNames())
     len <- getLength()
-    if (max(location) > len) {
+    if (max(location) > loclen) {
         stop("location out of range.")
     }
     if (len > 0) {

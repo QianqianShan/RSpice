@@ -1,4 +1,4 @@
-#' Load Specified Circui to Ngspice
+#' Load Specified Circuit to Ngspice
 #'
 #' Load specified circuit and send it to Ngspice.
 #' @param circarray a list of character strings which are used to define
