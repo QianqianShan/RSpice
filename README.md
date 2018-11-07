@@ -33,7 +33,7 @@ Refer the [download page](https://sourceforge.net/projects/ngspice/files/ng-spic
 4.  $ make
 5.  $ sudo make install
 
-See Section 1 for more details on the options for *configure* from the *INSTALL* file in the unpacked tarball folder.
+The default installation path is */usr/local/bin*, */usr/local/man*, etc. The installation prefix could be modified from */usr/local* by giving the *configure* in step 2 an option *--prefix=PATH*. See Section 1 for more details on the options for *configure* from the *INSTALL* file in the unpacked tarball folder.
 
 ### Compile the source code for Windows systems
 
