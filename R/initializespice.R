@@ -12,33 +12,53 @@
 #' # Initialize Ngspice.
 #' initializeSpice(dylibpath = findSpice(), dylibname = 'libngspice.so')}
 #' @export
+
 initializeSpice <- function(dylibpath, dylibname) {
   cat("Finding", paste0(dylibname,.Platform$dynlib.ext) ,"now ...\n")
   if (.Platform$OS.type == "unix") {
-    cat("The default directory for standard configuration file, spinit, is:\n")
+    cat("The default path for Ngspice shared library is: \n /usr/local/lib\n")
+    if (grep("64", R.Version()$arch)) {
+      cat("Your are using 64-bit R version, please make sure your Ngspice shared library is 64-bit too.\n")
+    } else {
+      cat("Your are using 32-bit R version, please make sure your Ngspice shared library is 32-bit too.\n")
+    }
+    cat("The default path for standard configuration file, spinit, is: ")
     cat("/usr/local/share/ngspice/scripts \n")
     
-    cat("The default directory for the code models for XSPICE is:\n")
+    cat("The default path for the code models for XSPICE is:\n")
     cat("/usr/local/lib/ngspice/ \n")
     cat("Ignore the warning message \"can't find init file\" if XSPICE is not used.\n")
   } else {
-    cat("The default directory for standard configuration file, spinit, is:\n")
-    cat("C:/Spice/share/ngspice/scripts for 32-bit system \n")
-    cat("C:/Spice64/share/ngspice/scripts for 64-bit system \n")
+    if (grep("64", R.Version()$arch)) {
+      cat("Your are using 64-bit R version, please make sure your Ngspice shared library is 64-bit too.\n")
+      cat("The default path for Ngspice shared library is:\n")
+      cat("C:/Spice64/bin \n")
+      
+      cat("The default path for standard configuration file, spinit, is:\n")
+      cat("C:/Spice64/share/ngspice/scripts \n")
+      
+      cat("The default path for the code models for XSPICE is:\n")
+      cat("C:/Spice64/lib/ngspice \n")
+      
+        } else {
+      cat("Your are using 32-bit R version, please make sure your Ngspice shared library is 32-bit too.\n")
+          cat("The default path for Ngspice shared library is:\n")
+          cat("C:/Spice/bin \n")
+          cat("The default path for standard configuration file, spinit, is:\n")
+          cat("C:/Spice/share/ngspice/scripts\n")
+          
+          cat("The default path for the code models for XSPICE is:\n")
+          cat("C:/Spice/lib/ngspice\n")
+           }
+ 
+ 
     
-    
-    cat("The default directory for Ngspice shared library is in:\n")
-    cat("C:/Spice/bin for 32-bit system \n")
-    cat("C:/Spice64/bin for 64-bit system \n")
-    
-    cat("The default directory for the code models for XSPICE is:\n")
-    cat("C:/Spice/lib/ngspice for 32-bit system \n")
-    cat("C:/Spice64/lib/ngspice for 64-bit system \n")
+   
     cat("Ignore the warning message when initializing Ngspice \"can't find init file\" if XSPICE is not used.\n")
     
   }
   
-  cat("Check if spinit, *.cm exist and the dylibname is correct before proceeding.\n")
+  # cat("Check if spinit, *.cm exist and the dylibname is correct before proceeding.\n")
   # update the dlllibpath 
   dylibpath <-  findSpice(dylibpath, dylibname)
   # add the correct extension 

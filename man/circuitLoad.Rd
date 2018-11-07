@@ -4,10 +4,15 @@
 \alias{circuitLoad}
 \title{Load Specified Circuit to Ngspice}
 \usage{
-circuitLoad(circarray, listing = TRUE)
+circuitLoad(circarray, dylibpath = NULL, dylibname = NULL,
+  listing = TRUE)
 }
 \arguments{
 \item{circarray}{a list of character strings which are used to define}
+
+\item{dylibpath}{the path of the .Ngspice shared library file.}
+
+\item{dylibname}{the name of the Ngspice shared library without extensions.}
 
 \item{listing}{logical; if TRUE, print a listing of the current circuit after
 loading the circuit.}
@@ -17,7 +22,10 @@ The outputs from printf, fprintf and fputs of Ngspice simulator. The
         listing of the current circuit will be returned if \code{listing = TRUE}.
 }
 \description{
-Load specified circuit and send it to Ngspice.
+Initialize Ngspice by linking to its shared library, load the specified
+ circuit and send the circuit netlist to Ngspice. If the Ngspice shared
+ library has been linked, only the function will only load the 
+ specified circuit.
 }
 \examples{
 \dontrun{

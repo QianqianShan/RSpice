@@ -198,6 +198,8 @@ void RunSpice(int *bg);
 /*Function to unload ngspice shared library*/
 void UnloadNgspice();
 
+/* Test if the ngspice shared library has been loaded */
+void TestLibLinkage(int *indicator);
 
 
 
@@ -303,6 +305,13 @@ void InitializeSpice(char *dllpath, char *dllname)
 }
 
 
+
+/* Function to test if the ngdllhandle is NULL or not */
+void TestLibLinkage(int *indicator) 
+{
+if ( ngdllhandle !=NULL )  *indicator = 1;
+else *indicator = 0;
+}
 
 /* Function to load the circuit */
 void CircuitLoad(char **circarray, int *len, int *list)

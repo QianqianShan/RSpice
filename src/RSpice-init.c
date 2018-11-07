@@ -14,6 +14,7 @@ extern void GetVectorLength(void *);
 extern void InitializeSpice(void *, void *);
 extern void RunSpice(void *);
 extern void SpiceCommand(void *, void *);
+extern void TestLibLinkage(void *);
 extern void UnloadNgspice();
 
 static const R_CMethodDef CEntries[] = {
@@ -25,6 +26,7 @@ static const R_CMethodDef CEntries[] = {
     {"InitializeSpice", (DL_FUNC) &InitializeSpice, 2},
     {"RunSpice",        (DL_FUNC) &RunSpice,        1},
     {"SpiceCommand",    (DL_FUNC) &SpiceCommand,    2},
+    {"TestLibLinkage",  (DL_FUNC) &TestLibLinkage,  1},
     {"UnloadNgspice",   (DL_FUNC) &UnloadNgspice,   0},
     {NULL, NULL, 0}
 };

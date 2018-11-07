@@ -35,7 +35,7 @@ Refer the [download page](https://sourceforge.net/projects/ngspice/files/ng-spic
 
 The default installation path is */usr/local/bin*, */usr/local/man*, etc. The installation prefix could be modified from */usr/local* by giving the *configure* in step 2 an option *--prefix=PATH*. See Section 1 for more details on the options for *configure* from the *INSTALL* file in the unpacked tarball folder.
 
-### Compile the source code for Windows systems
+#### Compile the source code for Windows systems
 
 There are multiple ways to compile the Ngspice source code into a shared library for Windows systems:
 
@@ -44,8 +44,24 @@ There are multiple ways to compile the Ngspice source code into a shared library
 
 ### Compiled Shared Libraries for Downloading
 
+There are compiled shared library available for use.
+
+-   For Windows 64-bit systems, download the zip file [here](https://github.com/QianqianShan/CompiledNgspice/tree/master/dll64) and unzip it into the C drive.
+
+-   For Windows 32-bit systems, download the zip file [here](https://github.com/QianqianShan/CompiledNgspice/tree/master/dll32) and unzip it into the C drive.
+
+-   For \*unix 62-bit systems, download files and folders from [here](https://github.com/QianqianShan/CompiledNgspice/tree/master/so64). Copy the files in lib folder to */usr/local/lib*, copy the *ngspice* folder to */usr/local/share*.
+
+-   For \*unix 32-bit systems, similar to above, download [here](https://github.com/QianqianShan/CompiledNgspice/tree/master/so32). Copy the files in lib folder to */usr/local/lib*, copy the *ngspice* folder to */usr/local/share*.
+
 Installation
 ------------
+
+RSpice can be installed with:
+
+``` r
+install.packages("RSpice")
+```
 
 You can install RSpice from github with:
 

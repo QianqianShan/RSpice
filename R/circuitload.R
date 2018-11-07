@@ -1,7 +1,12 @@
 #' Load Specified Circuit to Ngspice
 #'
-#' Load specified circuit and send it to Ngspice.
+#' Initialize Ngspice by linking to its shared library, load the specified
+#'  circuit and send the circuit netlist to Ngspice. If the Ngspice shared
+#'  library has been linked, only the function will only load the 
+#'  specified circuit.  
 #' @param circarray a list of character strings which are used to define
+#' @param dylibpath the path of the .Ngspice shared library file. 
+#' @param dylibname the name of the Ngspice shared library without extensions.
 #' @param listing logical; if TRUE, print a listing of the current circuit after
 #'                loading the circuit.
 #' @return The outputs from printf, fprintf and fputs of Ngspice simulator. The
@@ -16,7 +21,17 @@
 #'            'VDD 0 1 DC 10', '.op', '.end'))}
 #' @useDynLib RSpice
 #' @export
-circuitLoad <- function(circarray, listing = TRUE) {
+circuitLoad <- function(circarray, dylibpath = NULL,
+                        dylibname = NULL, listing = TRUE) {
+  
+  # test if the Ngspice shared library has been loaded 
+   load.ind <- .C("TestLibLinkage", as.integer(0))[[1]]
+   if (!load.ind) { # if Ngspice is not initialized 
+     cat("Initialize Ngspice now. \n")
+    res <- initializeSpice(dylibpath, dylibname)
+   }
+   
+   cat("Ngspice has already been initialized, load circuit now. \n")
     circarraynull <- c(circarray, "NULL")
     out <- .C("CircuitLoad", as.character(circarraynull), 
         as.integer(length(circarraynull)), as.integer(listing))[[1]]
