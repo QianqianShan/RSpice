@@ -17,7 +17,7 @@ Compilation of Ngspice as Shared Library
 
 ### Compile from the source code
 
-Refer the [download page](https://sourceforge.net/projects/ngspice/files/ng-spice-rework/28/) of Ngspice and download the source code of Ngspice from **ngspice-28.tar.gz**. We need to compile to source code to generate a shared library of Ngspice with extension *.so* or *.dll* depending on the operating systems. It's recommended to install the released stable version of Ngspice from tarball instead of installing directly from the github repository of Ngspice.
+Refer the <https://sourceforge.net/projects/ngspice/files/ng-spice-rework/28/> of Ngspice and download the source code of Ngspice from **ngspice-28.tar.gz**. We need to compile to source code to generate a shared library of Ngspice with extension *.so* or *.dll* depending on the operating systems. It's recommended to install the released stable version of Ngspice from tarball instead of installing directly from the github repository of Ngspice.
 
 #### Compile the source code for \*unix systems,
 
@@ -73,8 +73,4 @@ devtools::install_github("https://github.com/QianqianShan/RSpice")
 Example
 -------
 
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-## basic example code
-```
+See the vignette for examples.
