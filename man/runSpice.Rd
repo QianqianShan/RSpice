@@ -2,7 +2,7 @@
 % Please edit documentation in R/runspice.R
 \name{runSpice}
 \alias{runSpice}
-\title{Run Ngspice.}
+\title{Send Command to Ngspice to Run the Circuit Simulation}
 \usage{
 runSpice(bgrun = TRUE)
 }
@@ -14,10 +14,11 @@ or background thread.}
 Simulation status obtained from Ngspice is printed.
 }
 \description{
-Run Ngspice.
+Send command to Ngspice to run the simulation of the circuit.
 }
 \examples{
 \dontrun{
+
 # Run the simulation in main thread
 runSpice()
 

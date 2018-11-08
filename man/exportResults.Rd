@@ -7,15 +7,23 @@
 exportResults(location)
 }
 \arguments{
-\item{location}{a vector of the location(s) of the output we want to export,
+\item{location}{a vector of the location(s) of the outputs we want to export,
 i.e. the location-th output from the \code{getPlotNames()}.}
 }
+\value{
+A matrix containing the output values with the ouputs for each 
+        location stored in one row. The number of rows of the
+        matrix equals \code{length(location)} and the number of columns
+        equals the length of each output value.
+}
 \description{
-Export the Output Values from Ngspice
+Export the specified output values from Ngspice.
 }
 \examples{
 \dontrun{
-# Export the output values at location 1, 2 and 4. 
+# obtain the location and Name information by running getPlotNames()
+getPlotNames()
+# Export the output values for location 1, 2 and 4. 
 exportResults(c(1, 2, 4))
 }
 }

@@ -20,5 +20,6 @@ Send a valid command from caller
 
 # to print a listing of the current circuit
 
-spiceCommand("listing")}                 
+spiceCommand("listing")
+}                 
 }

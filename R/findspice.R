@@ -39,7 +39,7 @@ findSpice <- function(dylibpath, dylibname) {
                   " -name ", dylibname, .Platform$dynlib.ext), 
                   intern = TRUE)
             } else {
-                stop("Dylibpath doesn't exist. Please enter a valid dylibpath.")
+                stop("dylibpath doesn't exist. Please enter a valid dylibpath.")
             }
         }
         # file.paths <- readLines(con = 'temp.name')

@@ -119,7 +119,6 @@ toyexample
 
 # initialize Ngspice and load the circuit 
 circ <- circuitLoad(toyexample, dylibpath, dylibname, listing = TRUE)
-#> Initialize Ngspice now. 
 #> Finding libngspice.so now ...
 #> The default path for Ngspice shared library is: 
 #>  /usr/local/lib
@@ -324,7 +323,7 @@ PlotNames
 #> 9        9        time
 
 # data length 
-data.length<-getLength()
+data.length <- getLength()
 data.length
 #> [1] 619
 
@@ -352,5 +351,5 @@ for (i in 1:2) {
 
 # unload Ngspice shared library
 unloadSpice()
-#> Ngspice Shared Library Unloaded
+#> Ngspice shared library unloaded.
 ```

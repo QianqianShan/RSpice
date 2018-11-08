@@ -7,8 +7,9 @@
 getPlotNames()
 }
 \value{
-A data fram with two columns: location and Name. The location column
-        shows the order of output names obtained from Ngspice and the Name 
+A data frame with two columns: \code{location} and \code{Name}.
+        The \code{location} column shows the order of output names 
+        retuned from Ngspice and the \code{Name} 
         column shows the corresponding output names returned from Ngspice.
 }
 \description{
@@ -21,6 +22,5 @@ Ngspice after the simulation of a circuit.
 }
 \examples{
 \dontrun{
-getPlotNames()
-}
+getPlotNames() }
 }

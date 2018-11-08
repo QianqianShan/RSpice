@@ -2,7 +2,7 @@
 % Please edit documentation in R/getlength.R
 \name{getLength}
 \alias{getLength}
-\title{Extract the length of the output.}
+\title{Extract the Length of the Output}
 \usage{
 getLength()
 }
@@ -11,7 +11,7 @@ An integer showing the length of the ouput after running a
         simulation of a circuit in Ngspice.
 }
 \description{
-Extract the length of the output.
+Extract the length of the output from Ngspice.
 }
 \examples{
 \dontrun{

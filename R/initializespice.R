@@ -51,9 +51,6 @@ initializeSpice <- function(dylibpath, dylibname) {
           cat("C:/Spice/lib/ngspice\n")
            }
  
- 
-    
-   
     cat("Ignore the warning message when initializing Ngspice \"can't find init file\" if XSPICE is not used.\n")
     
   }

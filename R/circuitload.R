@@ -27,9 +27,10 @@ circuitLoad <- function(circarray, dylibpath = NULL,
   # test if the Ngspice shared library has been loaded 
    load.ind <- .C("TestLibLinkage", as.integer(0))[[1]]
    if (!load.ind) { # if Ngspice is not initialized 
-     cat("Initialize Ngspice now. \n")
+   #  cat("Initialize Ngspice now. \n")
     res <- initializeSpice(dylibpath, dylibname)
    }
+  
    
    cat("Ngspice has already been initialized, load circuit now. \n")
     circarraynull <- c(circarray, "NULL")

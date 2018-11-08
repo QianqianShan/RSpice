@@ -1,10 +1,12 @@
-#' Run Ngspice.
-
+#' Send Command to Ngspice to Run the Circuit Simulation 
+#' 
+#' Send command to Ngspice to run the simulation of the circuit.
 #' @param bgrun logical; indicator of if the simulation is run in main thread 
 #'               or background thread. 
 #' @return Simulation status obtained from Ngspice is printed.
 #' @examples 
 #' \dontrun{
+#' 
 #' # Run the simulation in main thread
 #' runSpice()
 #' 

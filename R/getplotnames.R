@@ -5,13 +5,13 @@
 #' 
 #' \code{getPlotNames} returns the output names from Ngspice after running a 
 #'         circuit simulation.
-#' @return A data fram with two columns: location and Name. The location column
-#'         shows the order of output names obtained from Ngspice and the Name 
+#' @return A data frame with two columns: \code{location} and \code{Name}.
+#'         The \code{location} column shows the order of output names 
+#'         retuned from Ngspice and the \code{Name} 
 #'         column shows the corresponding output names returned from Ngspice.
 #' @examples 
 #' \dontrun{
-#' getPlotNames()
-#' }
+#' getPlotNames() }
 #' @useDynLib RSpice
 #' @export
 getPlotNames <- function() {

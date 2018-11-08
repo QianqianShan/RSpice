@@ -504,12 +504,12 @@ void UnloadNgspice()
     if (ngdllhandle)
     {;
         dlclose(ngdllhandle);
-        Rprintf("Ngspice Shared Library Unloaded\n\n");
+        Rprintf("Ngspice shared library unloaded.\n\n");
         ngdllhandle = NULL;
     }
     else
     {
-        Rprintf("Ngspice shared library not loaded.\n");
+        Rprintf("Ngspice shared library already unloaded.\n");
     }
 }
 
