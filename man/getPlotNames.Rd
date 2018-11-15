@@ -10,14 +10,14 @@ getPlotNames()
 A data frame with two columns: \code{location} and \code{Name}.
         The \code{location} column shows the order of output names 
         retuned from Ngspice and the \code{Name} 
-        column shows the corresponding output names returned from Ngspice.
+        column shows the corresponding output names returned from ngspice.
 }
 \description{
 Read the available output names with their corresponding order from 
-Ngspice after the simulation of a circuit.
+ngspice after the simulation of a circuit.
 }
 \details{
-\code{getPlotNames} returns the output names from Ngspice after running a 
+\code{getPlotNames} returns the output names from ngspice after running a 
         circuit simulation.
 }
 \examples{

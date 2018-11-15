@@ -174,7 +174,7 @@ static inline void set_no_bg(bool val)
 /*Declarations of functions which will be called by R. Functions need to be 'void' type in order to be called by R. */
 
 /*Function to load the Ngspice shared library, and load the functions from shared library */
-void InitializeSpice(char *dllpath,char *dllname);
+void InitializeSpice(char *dllpath, char *dllname);
 
 /* Function to return the length of all available output names returned from Ngspice */
 void GetVectorLength(int *length);
@@ -254,7 +254,7 @@ void InitializeSpice(char *dllpath, char *dllname)
 
 	strcat(fulldllname, dllname);
 
-	Rprintf("Start loading %s\n", fulldllname);
+	
 	ngdllhandle = dlopen(fulldllname, RTLD_NOW);
 	errmsg = dlerror();
 	if (errmsg)
@@ -296,8 +296,9 @@ void InitializeSpice(char *dllpath, char *dllname)
     errmsg = dlerror();
     if (errmsg)
         Rprintf("%s",errmsg);
-    /*When ngspice.dll/.so is loaded, initialize the simulator by calling ngSpice_Init_handle,
+    /*When ngspice is loaded, initialize the simulator by calling ngSpice_Init_handle,
     address pointers of callback functions such as SendChar*, SendStat* are sent to ngspice.dll .*/
+
     ((int * (*)(SendChar*, SendStat*, ControlledExit*, SendData*, SendInitData*,
                 BGThreadRunning*, void*)) ngSpice_Init_handle)(ng_getchar, ng_getstat,
                         ng_exit, NULL, ng_initdata, ng_thread_runs, NULL);

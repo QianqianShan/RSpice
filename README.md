@@ -86,29 +86,6 @@ The following code demonstrates the usage of RSpice with two built-in circuit ne
 ``` r
 # load the library
 library(RSpice)
-
-# define dylibpath and dylibname depending on the platforms
-if ((length(grep("64", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".so")) {
-  # if 64-bit system with *unix system 
-  dylibpath <- "/usr/local"
-  dylibname <- "libngspice"
-} else if ((length(grep("32", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".so")) {
-  dylibpath <- "/usr/local"
-  dylibname <- "libngspice"
-} else if ((length(grep("64", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".dll")) {
-  dylibpath <- "C:/Spice64/bin"
-  dylibname <- "libngspice-0"
-} else if ((length(grep("32", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".dll")) {
-  dylibpath <- "C:/Spice/bin"
-  dylibname <- "libngspice-0"
-} 
-
-dylibpath 
-#> [1] "/usr/local"
-dylibname
-#> [1] "libngspice"
-
-
 #########################
 # example 1 : toyexample 
 #########################
@@ -117,21 +94,19 @@ toyexample
 #> [1] ".title test "  "R1 1 2 5k"     "R2 2 0 5k"     "VDD 1 0 DC 10"
 #> [5] ".op"           ".end"
 
+# or equivalently, define the circuit in R or read it from local file
+# the netlist must start with a .title line and end with .end
+toyexample <- c(".title test ", "R1 1 2 5k", "R2 2 0 5k",
+                "VDD 1 0 DC 10", ".op", ".end")
+
 # initialize Ngspice and load the circuit 
-circ <- circuitLoad(toyexample, dylibpath, dylibname, listing = TRUE)
-#> Finding libngspice.so now ...
-#> The default path for Ngspice shared library is: 
-#>  /usr/local/lib
+circ <- circuitLoad(toyexample)
+#> The default path for Ngspice shared library: /usr/local/lib is searched.
+#> The default dylibname for ngspice shared library libngspice is searched.
 #> Your are using 64-bit R version, please make sure your Ngspice shared library is 64-bit too.
-#> The default path for standard configuration file, spinit, is: /usr/local/share/ngspice/scripts 
-#> The default path for the code models for XSPICE is:
-#> /usr/local/lib/ngspice/ 
-#> Ignore the warning message "can't find init file" if XSPICE is not used.
-#> 
-#>  Shared library exists in the following directories, the first is used. 
-#> [1] "/usr/local/lib/libngspice.so"
-#> Initializing  libngspice.so now...
-#> Start loading /usr/local/lib/libngspice.so
+#> Searching for standard configuration file, spinit, at /usr/local/share/ngspice/scripts...
+#>  Searching default path for the code models for XSPICE at /usr/local/lib/ngspice...
+#> Initializing ngspice now...
 #> /usr/local/lib/libngspice.so loaded successfully. 
 #> stdout ******
 #> stdout ** ngspice-28 shared library
@@ -150,15 +125,10 @@ circ <- circuitLoad(toyexample, dylibpath, dylibname, listing = TRUE)
 #> stdout 5 : vdd 1 0 dc 10
 #> stdout 6 : .op
 #> stdout 8 : .end
-
+#> Circuit is loaded successfully.
 
 # run the simulation in mainthread 
-runSpice(bgrun = FALSE)
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#>  Reference value :  0.00000e+00
-#> stdout No. of Data Rows : 1
+runSpice()
 
 # list the output names and their corresponding stored order: locations 
 PlotNames <- getPlotNames()
@@ -186,49 +156,9 @@ print(cmds)
 v2 <- double(length(cmds))
 for (i in 1:length(r1.values)) {
 spiceCommand(cmds[i])   # send commands one by one 
-runSpice(bgrun= FALSE)  # run the simulation 
+runSpice()  # run the simulation 
 v2[i] <- exportResults(c(2)) # export the voltage at node 2 (with location = 2)
 }
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> op
-#> stdout No. of Data Rows : 1
 print(v2)
 #>  [1] 8.333333 7.142857 6.250000 5.555556 5.000000 4.545455 4.166667
 #>  [8] 3.846154 3.571429 3.333333
@@ -284,29 +214,10 @@ circuitLoad(linearregulator)
 #> stdout 11 : rload 5 0 100
 #> stdout 12 : .tran 0.1m 0.06
 #> stdout 14 : .end
+#> Circuit is loaded successfully.
 
 # run the simulation 
-runSpice(bgrun= FALSE)
-#> stdout Doing analysis at TEMP = 27.000000 and TNOM = 27.000000
-#> Device Setup
-#> stderr Warning: vin: no DC value, transient time 0 value used
-#> op
-#> stdout Initial Transient Solution
-#> stdout --------------------------
-#> stdout Node                                   Voltage
-#> stdout ----                                   -------
-#> stdout 2                                            0
-#> stdout 1                                      56.0374
-#> stdout 5                                      4.98879
-#> stdout 3                                          2.5
-#> stdout 4                                       2.4944
-#> stdout e1#branch                             -33.6155
-#> stdout vref#branch                                  0
-#> stdout vin#branch                             33.5654
-#> tran init
-#> tran
-#> --ready--
-#> stdout No. of Data Rows : 619
+runSpice()
 
 # Plotnames 
 PlotNames<-getPlotNames()
@@ -323,13 +234,13 @@ PlotNames
 #> 9        9        time
 
 # data length 
-data.length <- getLength()
+data.length<-getLength()
 data.length
 #> [1] 619
 
 # export the input and output voltages from location 8 and 6, respectively. 
 results <- exportResults(c(8, 6))
-head(results[1:2, 1:10])
+results[1:2, 1:10]
 #>       [,1]        [,2]        [,3]       [,4]       [,5]       [,6]
 #> 8 0.000000 0.004523893 0.009047786 0.01809557 0.03619109 0.07238186
 #> 6 4.988793 4.988801568 4.988810594 4.98882865 4.98886475 4.98893697

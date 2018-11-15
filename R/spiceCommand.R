@@ -1,9 +1,9 @@
 #' Send Command to Ngspice
 #'
-#' Send a valid command from caller
-#'  to ngspice.dll. See more control or interactive commands details in
+#' Send a valid command from caller to ngspice. See more control or interactive
+#'  commands details in
 #' \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
-#' @param cmd a vector of commands which to be sent to Ngspice for
+#' @param cmd a vector of commands which to be sent to ngspice for
 #'                 one time change.
 #' @examples 
 #' \dontrun{

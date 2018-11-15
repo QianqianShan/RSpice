@@ -13,8 +13,7 @@ recommended as it may search some directories that requires
 root/admin authorization. If a path is specified, the search will be 
 conducted under the path recursively with a faster speed.}
 
-\item{dylibname}{a character string with the name of the Ngspice shared library,
-the extension of the shared library is added by R automatically.}
+\item{dylibname}{a character string with the name of the Ngspice shared library.}
 }
 \value{
 The function will stop if no shared library is found, and the first
@@ -27,8 +26,8 @@ Find if the specified Ngspice shared library exists and return the first
 \examples{
 \dontrun{
  # under windows os
-  findSpice(dylibpath = 'C:/Users', dylibname = 'ngspice')
+  findSpice(dylibpath = 'C:/Users/bin', dylibname = 'ngspice.so')
  # under *unix os
- findSpice(dylibpath = '/home/user', dylibname = 'libngspice')}
+ findSpice(dylibpath = '/usr/local/lib', dylibname = 'libngspice.so')}
  
 }

@@ -8,38 +8,40 @@
 #'        recommended as it may search some directories that requires
 #'        root/admin authorization. If a path is specified, the search will be 
 #'        conducted under the path recursively with a faster speed.  
-#' @param dylibname a character string with the name of the Ngspice shared library,
-#'        the extension of the shared library is added by R automatically.  
+#' @param dylibname a character string with the name of the Ngspice shared library. 
 #' @return The function will stop if no shared library is found, and the first
 #'         available file path containing the shared library will be returned.
 #' @examples 
 #' \dontrun{
 #'  # under windows os
-#'   findSpice(dylibpath = 'C:/Users', dylibname = 'ngspice')
+#'   findSpice(dylibpath = 'C:/Users/bin', dylibname = 'ngspice.so')
 #'  # under *unix os
-#'  findSpice(dylibpath = '/home/user', dylibname = 'libngspice')}
+#'  findSpice(dylibpath = '/usr/local/lib', dylibname = 'libngspice.so')}
 #'  
 #' @export
 
 findSpice <- function(dylibpath, dylibname) {
+  if ((length(grep(".so$", dylibname)) == 0) | (length(grep(".dll$", dylibname)) == 0)) {
+    dylibname = paste0(dylibname,.Platform$dynlib.ext)
+  }
+  
     if (.Platform$OS.type == "unix") {
-        # temp.name <- paste('temp.name',
-        # as.character(Sys.Date()), sep = '')
+
         if (is.null(dylibpath)) {
             # search across all directories to look for
             # the shared object
             file.paths <- system(paste0("find ~/ -name ", 
-                dylibname, .Platform$dynlib.ext), 
+                dylibname), 
                 intern = TRUE)
             
         } else {
             if (dir.exists(dylibpath)) {
                 file.paths <- system(paste0("find ", 
                   sub("/$", "", dylibpath), .Platform$file.sep, 
-                  " -name ", dylibname, .Platform$dynlib.ext), 
+                  " -name ", dylibname), 
                   intern = TRUE)
             } else {
-                stop("dylibpath doesn't exist. Please enter a valid dylibpath.")
+                stop("dylibpath doesn not exist. Please enter a valid dylibpath.")
             }
         }
         # file.paths <- readLines(con = 'temp.name')
@@ -54,7 +56,7 @@ findSpice <- function(dylibpath, dylibname) {
         # windows, find the shared object dll file
         if (is.null(dylibpath)) {
             file.paths <- system(paste0("cmd.exe /c dir /b/s ", 
-                dylibname, .Platform$dynlib.ext), 
+                dylibname), 
                 intern = TRUE)
         } else {
             if (dir.exists(dylibpath)) {
@@ -75,8 +77,7 @@ findSpice <- function(dylibpath, dylibname) {
               # run windows command line to search the accruate directory
                 file.paths <- system(paste0("cmd.exe /c dir ", 
                   "\"", dylibpath, "\\", dylibname, 
-                  .Platform$dynlib.ext, "\"", 
-                  " /b /s"), intern = TRUE)
+                   "\"", " /b /s"), intern = TRUE)
             } else {
                 stop("Dylibpath doesn't exist. Please enter a valid dylibpath.")
             }

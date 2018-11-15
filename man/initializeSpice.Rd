@@ -4,22 +4,23 @@
 \alias{initializeSpice}
 \title{Initialize Ngspice}
 \usage{
-initializeSpice(dylibpath, dylibname)
+initializeSpice(dylibpath, dylibname, verbose)
 }
 \arguments{
-\item{dylibpath}{the path of the .Ngspice shared library file.}
+\item{dylibpath}{the path of the ngspice shared library file.}
 
-\item{dylibname}{the name of the Ngspice shared library without extensions.}
+\item{dylibname}{the name of the ngspice shared library without extensions
+such as .so or .dll.}
 }
 \value{
 NULL.
 }
 \description{
-Load the Ngspice shared library and initialize Ngspice with the exported
- functions. See Chapter 19 of the Ngspice manual for more details.
+Load the ngspice shared library and initialize Ngspice with the exported
+ functions. See Chapter 19 of the ngspice manual for more details.
 }
 \examples{
 \dontrun{
 # Initialize Ngspice.
-initializeSpice(dylibpath = findSpice(), dylibname = 'libngspice.so')}
+initializeSpice(dylibpath = "/usr/local/bin", dylibname = 'libngspice')}
 }

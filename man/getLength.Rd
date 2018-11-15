@@ -8,7 +8,7 @@ getLength()
 }
 \value{
 An integer showing the length of the ouput after running a 
-        simulation of a circuit in Ngspice.
+        simulation of a circuit in ngspice.
 }
 \description{
 Extract the length of the output from Ngspice.

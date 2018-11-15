@@ -5,25 +5,33 @@
 \title{Load Specified Circuit to Ngspice}
 \usage{
 circuitLoad(circarray, dylibpath = NULL, dylibname = NULL,
-  listing = TRUE)
+  listing = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{circarray}{a list of character strings which are used to define}
 
-\item{dylibpath}{the path of the .Ngspice shared library file.}
+\item{dylibpath}{the path of the ngspice shared library file. If 
+\code{dylibpath = NULL}, the program will 
+search the default path for the shared library.}
 
-\item{dylibname}{the name of the Ngspice shared library without extensions.}
+\item{dylibname}{the name of the ngspice shared library without extensions.
+If \code{dylibpath = NULL}, the program will search the 
+shared library with its default name.}
 
 \item{listing}{logical; if TRUE, print a listing of the current circuit after
 loading the circuit.}
+
+\item{verbose}{logical; if TRUE, print the stdout, stderr etc information 
+exported from ngspice.}
 }
 \value{
-The outputs from printf, fprintf and fputs of Ngspice simulator. The
-        listing of the current circuit will be returned if \code{listing = TRUE}.
+The outputs from printf, fprintf and fputs of ngspice simulator if 
+         \code{verbose = TRUE}. The listing of the current circuit will be
+          returned if \code{listing = TRUE}.
 }
 \description{
-Initialize Ngspice by linking to its shared library, load the specified
- circuit and send the circuit netlist to Ngspice. If the Ngspice shared
+Initialize ngspice by linking to its shared library, load the specified
+ circuit and send the circuit netlist to ngspice. If the ngspice shared
  library has been linked, only the function will only load the 
  specified circuit.
 }

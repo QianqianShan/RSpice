@@ -4,7 +4,7 @@
 \alias{runSpice}
 \title{Send Command to Ngspice to Run the Circuit Simulation}
 \usage{
-runSpice(bgrun = TRUE)
+runSpice(bgrun = FALSE, verbose = FALSE)
 }
 \arguments{
 \item{bgrun}{logical; indicator of if the simulation is run in main thread 
@@ -14,7 +14,7 @@ or background thread.}
 Simulation status obtained from Ngspice is printed.
 }
 \description{
-Send command to Ngspice to run the simulation of the circuit.
+Send command to ngspice to run the simulation of the circuit.
 }
 \examples{
 \dontrun{
@@ -23,6 +23,6 @@ Send command to Ngspice to run the simulation of the circuit.
 runSpice()
 
 # Run the simulation in background thread 
-runSpice(bgrun = TRUE) 
+runSpice() 
 } 
 }

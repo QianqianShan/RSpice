@@ -7,12 +7,12 @@
 spiceCommand(cmd)
 }
 \arguments{
-\item{cmd}{a vector of commands which to be sent to Ngspice for
+\item{cmd}{a vector of commands which to be sent to ngspice for
 one time change.}
 }
 \description{
-Send a valid command from caller
- to ngspice.dll. See more control or interactive commands details in
+Send a valid command from caller to ngspice. See more control or interactive
+ commands details in
 \url{http://ngspice.sourceforge.net/docs/ngspice-manual.pdf}
 }
 \examples{

@@ -1,6 +1,6 @@
 #' Send Command to Ngspice to Run the Circuit Simulation 
 #' 
-#' Send command to Ngspice to run the simulation of the circuit.
+#' Send command to ngspice to run the simulation of the circuit.
 #' @param bgrun logical; indicator of if the simulation is run in main thread 
 #'               or background thread. 
 #' @return Simulation status obtained from Ngspice is printed.
@@ -11,11 +11,16 @@
 #' runSpice()
 #' 
 #' # Run the simulation in background thread 
-#' runSpice(bgrun = TRUE) 
+#' runSpice() 
 #' } 
 #' @useDynLib RSpice
 #' @export
-runSpice <- function(bgrun = TRUE) {
-    res <- .C("RunSpice", as.integer(bgrun))
-    invisible(res)
+runSpice <- function(bgrun = FALSE, verbose = FALSE) {
+  #  invisible(res <- .C("RunSpice", as.integer(bgrun)))
+   # invisible(res)
+  if (!verbose) {
+    out <-  utils::capture.output(.C("RunSpice", as.integer(bgrun)))
+  } else {
+    out <- .C("RunSpice", as.integer(bgrun))
+  }
 }

@@ -12,5 +12,5 @@ library already unloaded." dependening on if the \code{unloadSpice()}
 function is run for the first time or not.
 }
 \description{
-Unload the Ngspice shared library.
+Unload the ngspice shared library.
 }
