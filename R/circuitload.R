@@ -39,14 +39,14 @@ circuitLoad <- function(circarray, dylibpath = NULL,
      # if either the dylibpath or dylibname is NULL, use the default path/name
      if (is.null(dylibpath)) {
        # add default search path 
-       if ((length(grep("64", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".so")) {
+       if ((.Machine$sizeof.pointer == 8) & (.Platform$dynlib.ext == ".so")) {
          # if 64-bit system with *unix system 
          dylibpath <- "/usr/local/lib"
-       } else if ((length(grep("32", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".so")) {
+       } else if ((.Machine$sizeof.pointer == 4) & (.Platform$dynlib.ext == ".so")) {
          dylibpath <- "/usr/local/lib"
-       } else if ((length(grep("64", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".dll")) {
+       } else if ((.Machine$sizeof.pointer == 8) & (.Platform$dynlib.ext == ".dll")) {
          dylibpath <- "C:/Spice64/bin"
-       } else if ((length(grep("32", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".dll")) {
+       } else if ((.Machine$sizeof.pointer == 4) & (.Platform$dynlib.ext == ".dll")) {
          dylibpath <- "C:/Spice/bin"
        }
        cat("The default path for Ngspice shared library:",dylibpath,"is searched.\n")
@@ -54,14 +54,14 @@ circuitLoad <- function(circarray, dylibpath = NULL,
      
      # the case when dylibname is NULL 
      if (is.null(dylibname)) {
-       if ((length(grep("64", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".so")) {
+       if ((.Machine$sizeof.pointer == 8) & (.Platform$dynlib.ext == ".so")) {
          # if 64-bit system with *unix system 
          dylibname <- "libngspice"
-       } else if ((length(grep("32", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".so")) {
+       } else if ((.Machine$sizeof.pointer == 4) & (.Platform$dynlib.ext == ".so")) {
          dylibname <- "libngspice"
-       } else if ((length(grep("64", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".dll")) {
+       } else if ((.Machine$sizeof.pointer == 8) & (.Platform$dynlib.ext == ".dll")) {
          dylibname <- "libngspice-0"
-       } else if ((length(grep("32", R.Version()$arch)) > 0) & (.Platform$dynlib.ext == ".dll")) {
+       } else if ((.Machine$sizeof.pointer == 4) & (.Platform$dynlib.ext == ".dll")) {
          dylibname <- "libngspice-0"
        } 
        cat("The default dylibname for ngspice shared library",dylibname,"is searched.\n")

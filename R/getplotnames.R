@@ -27,6 +27,6 @@ getPlotNames <- function() {
         names(Names) <- c("location", "Name")
         return(Names)
     } else {
-        stop("Error! No output names from Ngspice")
+        stop("Error! No output names from Ngspice.")
     }
 }

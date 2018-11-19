@@ -20,6 +20,6 @@ spiceCommand <- function(cmd) {
         cmd <- tolower(cmd)
     }
     res <- .C("SpiceCommand", as.integer(length(cmd)), 
-        as.character(cmd))[[]]
+        as.character(cmd))[[2]]
     invisible(res)
 }

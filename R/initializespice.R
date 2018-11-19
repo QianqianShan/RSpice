@@ -19,54 +19,66 @@ initializeSpice <- function(dylibpath, dylibname, verbose) {
   # cat("Finding", paste0(dylibname,.Platform$dynlib.ext) ,"now ...\n")
   if (.Platform$OS.type == "unix") {
     # cat("The default path for Ngspice shared library is: \n /usr/local/lib\n")
-    if (grep("64", R.Version()$arch)) {
+    if (.Machine$sizeof.pointer == 8) {
       cat("Your are using 64-bit R version, please make sure your Ngspice shared library is 64-bit too.\n")
     } else {
       cat("Your are using 32-bit R version, please make sure your Ngspice shared library is 32-bit too.\n")
     }
-    cat("Searching for standard configuration file, spinit, at /usr/local/share/ngspice/scripts...\n ")
+    cat("Searching for standard configuration file, spinit, at /usr/local/share/ngspice/scripts \n ")
     if (!file.exists("/usr/local/share/ngspice/scripts/spinit")) {
-      cat("\"spinit\" is not found in the default path. \n")
+      cat("\"spinit\" is not found in the default path. \n \n ")
       # cat("Ignore the warning message \"can't find init file\" 
       #     if XSPICE is not used within ngspice.\n")
-    }
+    } else {
+      cat("File located. \n \n")
+    } 
     
-    cat("Searching default path for the code models for XSPICE at /usr/local/lib/ngspice...\n")
+    cat("Searching default path for the code models for XSPICE at /usr/local/lib/ngspice \n")
    if (!file.exists("/usr/local/lib/ngspice/table.cm")) {
      cat("Code models (*.cm files) are not found in the default path.\n")
+   } else {
+     cat("File located. \n \n")
    }
     
   } else { # operating systems other than *unix 
-    if (grep("64", R.Version()$arch)) {
+    if (.Machine$sizeof.pointer == 8) {
       cat("Your are using 64-bit R version, please make sure your Ngspice shared library is 64-bit too.\n")
-      cat("Searching for standard configuration file, spinit at C:/Spice64/share/ngspice/scripts ...\n ")
+      cat("Searching for standard configuration file, spinit at C:/Spice64/share/ngspice/scripts \n ")
       if (!file.exists("C:/Spice64/share/ngspice/scripts/spinit")) {
-        cat("\"spinit\" is not found in the default path. \n")
+        cat("\"spinit\" is not found in the default path. \n \n")
         # cat("Ignore the warning message \"can't find init file\" 
         #     if XSPICE is not used within ngspice.\n")
+      } else {
+        cat("File located. \n \n")
       }
       
-      cat("Searching default path for the code models for XSPICE at C:/Spice64/lib/ngspice...\n")
-      if (!file.exists("C:/Spice64/share/ngspice/table.cm")) {
-        cat("Code models (*.cm files) are not found in the default path.\n")
+      cat("Searching default path for the code models for XSPICE at C:/Spice64/lib/ngspice \n")
+      if (!file.exists("C:/Spice64/lib/ngspice/table.cm")) {
+        cat("Code models (*.cm files) are not found in the default path.\n \n")
         # cat("Ignore the warning message \"can't find init file\" 
         #     if XSPICE is not used within ngspice.\n")
+      } else {
+        cat("File located. \n \n")
       }
 
         } else {
       cat("Your are using 32-bit R version, please make sure your Ngspice shared library is 32-bit too.\n")
-      cat("Searching for standard configuration file, spinit, at C:/Spice/share/ngspice/scripts ...\n ")
+      cat("Searching for standard configuration file, spinit, at C:/Spice/share/ngspice/scripts \n ")
           if (!file.exists("C:/Spice/share/ngspice/scripts/spinit")) {
-            cat("\"spinit\" is not found in the default path. \n")
+            cat("\"spinit\" is not found in the default path. \n \n")
             # cat("Ignore the warning message \"can't find init file\" 
             #     if XSPICE is not used within ngspice.\n")
+          } else {
+            cat("File located. \n \n")
           }
           
-          cat("Searching default path for the code models for XSPICE at C:/Spice/lib/ngspice...\n")
-          if (!file.exists("C:/Spice64/share/ngspice/table.cm")) {
-            cat("Code models (*.cm files) are not found in the default path.\n")
+          cat("Searching default path for the code models for XSPICE at C:/Spice/lib/ngspice \n")
+          if (!file.exists("C:/Spice/lib/ngspice/table.cm")) {
+            cat("Code models (*.cm files) are not found in the default path.\n \n")
             # cat("Ignore the warning message \"can't find init file\" 
             #     if XSPICE is not used within ngspice.\n")
+          } else {
+            cat("File located. \n \n")
           }
         }
   }

@@ -334,7 +334,7 @@ void CircuitLoad(char **circarray, int *len, int *list)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 
 
@@ -372,7 +372,7 @@ void ExportResults(int *number, double *data)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 
 }
@@ -397,7 +397,7 @@ void SpiceCommand(int *n, char **cmd)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 }
 
@@ -420,7 +420,7 @@ void RunSpice(int *bg)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 }
 
@@ -442,7 +442,7 @@ void GetVectorLength(int *length)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 }
 
@@ -465,7 +465,7 @@ void GetPlotNames(char **name)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 }
 
@@ -493,7 +493,7 @@ void GetLength(int *size)
     }
     else
     {
-        Rprintf("Ngspice shared library or the exported functions not found. \n Use initializeSpice() function to load and initialize the handles first. \n");
+        Rprintf("Ngspice shared library or the exported functions not found. \n Use circuitLoad() or initializeSpice() functions to load and initialize the handles first. \n");
     }
 }
 
