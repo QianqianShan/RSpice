@@ -75,7 +75,7 @@ Or you can also install RSpice from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("https://github.com/QianqianShan/RSpice")
+devtools::install_github("QianqianShan/RSpice")
 ```
 
 4 - Examples
@@ -104,8 +104,12 @@ circ <- circuitLoad(toyexample)
 #> The default path for Ngspice shared library: /usr/local/lib is searched.
 #> The default dylibname for ngspice shared library libngspice is searched.
 #> Your are using 64-bit R version, please make sure your Ngspice shared library is 64-bit too.
-#> Searching for standard configuration file, spinit, at /usr/local/share/ngspice/scripts...
-#>  Searching default path for the code models for XSPICE at /usr/local/lib/ngspice...
+#> Searching for standard configuration file, spinit, at /usr/local/share/ngspice/scripts 
+#>  File located. 
+#>  
+#> Searching default path for the code models for XSPICE at /usr/local/lib/ngspice 
+#> File located. 
+#>  
 #> Initializing ngspice now...
 #> /usr/local/lib/libngspice.so loaded successfully. 
 #> stdout ******
