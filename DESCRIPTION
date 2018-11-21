@@ -1,6 +1,6 @@
 Package: RSpice
 Title: R Interface to the Ngspice Simulator
-Version: 1.0.1
+Version: 1.0.0
 Authors@R: c(
     person("Qianqian", "Shan", email = "qianqianshan.am@gmail.com", role = c("aut", "cre")), 
     person("Stephen D.", "Holland", email = "sdh4@iastate.edu", role = c("aut")),

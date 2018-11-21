@@ -14,20 +14,20 @@ RSpice : A Package for Using Ngspice from R
 1 - Background
 --------------
 
-The goal of RSpice is to implement an interface to allow users to run Ngspice in R via the shared library of Ngspice. It provides functions to control the simulator and read the feedback from Ngspice to R. By using *RSpice* package, it is possible to save and analyze the outputs from Ngspice in R.
+RSpice provides an interface to allow users to run ngspice, a popular open source electronic circuit simulator, in R via the ngspice shared library. RSpice provides functions to specify and modify the electronic circuit and its inputs to obtain simulation results and other feedback from ngspice. By using *RSpice* package, it is possible to perform statistical analysis on the outputs from ngspice.
 
 2 - Compilation of Ngspice as Shared Library
 --------------------------------------------
 
-There are two different ways to obtain Ngspice shared library: 1) compile from the source code and 2) download the available shared library and related files from the links provided in **2.2**.
+There are two different ways to obtain ngspice shared library: 1) compile from the source code, which is available from the developers/maintainers or 2) download the read-to-use shared library and related files from the links provided in **2.2**.
 
 ### 2.1 - Compile from the source code
 
-Refer the <https://sourceforge.net/projects/ngspice/files/ng-spice-rework/28> of Ngspice and download the source code of Ngspice from **ngspice-28.tar.gz**. We need to compile to source code to generate a shared library of Ngspice with extension *.so* or *.dll* depending on the operating systems. It's recommended to install the released stable version of Ngspice from tarball instead of installing directly from the github repository of Ngspice.
+Visit <https://sourceforge.net/projects/ngspice/files/ng-spice-rework/28> and download the source code of ngspice in the file **ngspice-28.tar.gz**. One can compile the ngspice source code to generate a shared library with extension *.so* or *.dll* depending on the operating system. It is recommended to install the released stable version of ngspice from the referred tarball instead of installing directly from the github repository of ngspice.
 
-#### 2.1.1 - Compile the source code for \*unix systems
+#### 2.1.1 - Compile the source code for UNIX/Linux systems
 
--   Unpack the tarball by **tar -zxvf ngspice-28.tar.gz** or some customized commands under your operating system, and it will produce a folder with name *ngspice-28*.
+-   Unpack the tarball by **tar -zxvf ngspice-28.tar.gz** or some customized commands under your operating system, to produce a folder with name *ngspice-28*.
 
 -   Change the directory to *ngspice-28* by **cd ngspice-28**.
 
@@ -39,20 +39,20 @@ Refer the <https://sourceforge.net/projects/ngspice/files/ng-spice-rework/28> of
 4.  $ make
 5.  $ sudo make install
 
-The default installation path is */usr/local/bin*, */usr/local/man*, etc. The installation prefix could be modified from */usr/local* by giving the *configure* in step 2 an option *--prefix=PATH*. See Section 1 for more details on the options for *configure* from the *INSTALL* file in the unpacked tarball folder.
+The default installation path is */usr/local/bin*, */usr/local/man*, etc. The installation prefix could be modified from */usr/local* by giving the *configure* in step 2 an option *--prefix=PATH*. See Section 1 of the *INSTALL* file in the unpacked tarball folder (*ngspice-28*) for more details on the options for *configure* .
 
 #### 2.1.2 - Compile the source code for Windows systems
 
-There are multiple ways to compile the Ngspice source code into a shared library for Windows systems:
+There are multiple ways to compile the ngspice source code into a dynamic linked library (dll) for Windows systems:
 
-1.  If visual studio is installed, go to the directory *visualc* of the unpacked tarball and start the project with double clicking on *sharedspice.vcxproj*, the *.dll* shared library could be built by building the project.
-2.  It's also possible to compile the ngspice shared library for Windows on a Linux machine by simply running the script *cross-compile-shared.sh* within the tarball folder.
+1.  If visual studio is installed, go to the directory *visualc* of the unpacked tarball and start the project by double clicking on *sharedspice.vcxproj*. The *.dll* will be built by building the project.
+2.  It is also possible to compile the ngspice shared library for Windows on a Linux machine by simply running the script *cross-compile-shared.sh* within the tarball folder.
 
-See Chapter 32 of the Ngspice user manual at <http://ngspice.sourceforge.net/docs/ngspice-manual.pdf> from more details on the compilation of Ngspice.
+See Chapter 32 of the Ngspice user manual at <http://ngspice.sourceforge.net/docs/ngspice-manual.pdf> for more details on the compilation of ngspice.
 
-### 2.2 - Available Compiled Shared Libraries
+### 2.2 - Ready-to-use Compiled Shared Libraries
 
-There are compiled shared library available for use:
+There are also compiled shared library available for use:
 
 -   For Windows 64-bit systems, download the zip file from <https://github.com/QianqianShan/CompiledNgspice/tree/master/dll64> and unzip it into the C drive.
 
@@ -65,10 +65,18 @@ There are compiled shared library available for use:
 3 - Installation
 ----------------
 
-RSpice can be installed with:
+RSpice can be installed from CRAN with (not available at this moment):
 
 ``` r
 install.packages("RSpice")
+```
+
+A package bundle of RSpice is available at <https://github.com/QianqianShan/RSpiceBundle>, download the *.tar.gz* file and install the package:
+
+``` r
+install.packages(/path/to/the/bundle/pkgname, repos = NULL, type = "source")
+# for example
+install.packages("~/Downloads/RSpice_1.0.0.tar.gz", repos = NULL, type = "source")
 ```
 
 Or you can also install RSpice from github with:
@@ -81,7 +89,7 @@ devtools::install_github("QianqianShan/RSpice")
 4 - Examples
 ------------
 
-The following code demonstrates the usage of RSpice with two built-in circuit netlists. See the vignette for more details on the examples.
+The following code demonstrates the use of RSpice with two built-in circuit netlists. See the vignette for more details on the examples and more examples.
 
 ``` r
 # load the library
@@ -99,7 +107,7 @@ toyexample
 toyexample <- c(".title test ", "R1 1 2 5k", "R2 2 0 5k",
                 "VDD 1 0 DC 10", ".op", ".end")
 
-# initialize Ngspice and load the circuit 
+# initialize ngspice and load the circuit 
 circ <- circuitLoad(toyexample)
 #> The default path for Ngspice shared library: /usr/local/lib is searched.
 #> The default dylibname for ngspice shared library libngspice is searched.
@@ -156,12 +164,12 @@ print(cmds)
 #>  [9] "alter r1=9k"  "alter r1=10k"
 
 # alter the resistance values from 1k to 10k Ohm. 
-# send the command to Ngspice via spiceCommand()
+# send the command to ngspice via spiceCommand()
 v2 <- double(length(cmds))
 for (i in 1:length(r1.values)) {
 spiceCommand(cmds[i])   # send commands one by one 
 runSpice()  # run the simulation 
-v2[i] <- exportResults(c(2)) # export the voltage at node 2 (with location = 2)
+v2[i] <- exportResults(c(2)) # export the voltage at node 2 (location = 2)
 }
 print(v2)
 #>  [1] 8.333333 7.142857 6.250000 5.555556 5.000000 4.545455 4.166667
@@ -173,7 +181,7 @@ plot(seq(1, 10, 1), v2, xlab = expression(paste( "R1 (k", Omega,")" )),
      ylab = "Voltage at Node 2", pch = 16, las = 1, type = "l")
 ```
 
-![](README-unnamed-chunk-3-1.png)
+![](README-unnamed-chunk-4-1.png)
 
 ``` r
 
@@ -197,8 +205,7 @@ linearregulator
 #> [13] ".tran 0.1m 0.06"                                                                              
 #> [14] ".END "
 
-# as Ngspice has been initialized from the above example, the circuitLoad function will only 
-# load the circuit, and dylibpath and dylibname are not needed.
+# as ngspice has been initialized from the above example, the circuitLoad function will only load the circuit, and dylibpath and dylibname are not needed.
 circuitLoad(linearregulator)
 #> Ngspice has already been initialized, load circuit now. 
 #> Source Deck
@@ -260,7 +267,7 @@ for (i in 1:2) {
 }
 ```
 
-![](README-unnamed-chunk-3-2.png)
+![](README-unnamed-chunk-4-2.png)
 
 ``` r
 
