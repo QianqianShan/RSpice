@@ -9,6 +9,9 @@ runSpice(bgrun = FALSE, verbose = FALSE)
 \arguments{
 \item{bgrun}{logical; indicator of if the simulation is run in main thread 
 or background thread.}
+
+\item{verbose}{logical; if TRUE, print the stdout, stderr etc information 
+exported from ngspice.}
 }
 \value{
 Simulation status obtained from Ngspice is printed.

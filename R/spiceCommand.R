@@ -15,7 +15,7 @@
 #' @useDynLib RSpice
 #' @export
 spiceCommand <- function(cmd) {
-    if (cmd != tolower(cmd)) {
+    if (any(cmd != tolower(cmd))) {
         cat("cmd contains upper case letters, use spiceCommand(\"listing\") to check the identifier and parameter names. \n altercmd has been converted to only include lower cases. \n")
         cmd <- tolower(cmd)
     }

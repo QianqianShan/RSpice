@@ -3,6 +3,8 @@
 #' Send command to ngspice to run the simulation of the circuit.
 #' @param bgrun logical; indicator of if the simulation is run in main thread 
 #'               or background thread. 
+#' @param verbose logical; if TRUE, print the stdout, stderr etc information 
+#'                exported from ngspice.
 #' @return Simulation status obtained from Ngspice is printed.
 #' @examples 
 #' \dontrun{

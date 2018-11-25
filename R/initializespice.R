@@ -6,7 +6,8 @@
 #' @param dylibpath the path of the ngspice shared library file. 
 #' @param dylibname the name of the ngspice shared library without extensions
 #'                  such as .so or .dll. 
-#' @param
+#' @param verbose logical; if TRUE, print the stdout, stderr etc information 
+#'                exported from ngspice.
 #' @return NULL.
 #' @useDynLib RSpice
 #' @examples
@@ -116,7 +117,7 @@ initializeSpice <- function(dylibpath, dylibname, verbose) {
     if (!file.exists(paste0(dylibpath, .Platform$file.sep, 
                             dylibname))) {
       stop(cat("The specified Ngspice shared library", dylibname,
-               "is not found in the specified path", dyllibpath,".\n"))
+               "is not found in the specified path", dylibpath,".\n"))
     }
     
     # send the dylibpath and dylibname info to C

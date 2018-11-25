@@ -11,6 +11,9 @@ initializeSpice(dylibpath, dylibname, verbose)
 
 \item{dylibname}{the name of the ngspice shared library without extensions
 such as .so or .dll.}
+
+\item{verbose}{logical; if TRUE, print the stdout, stderr etc information 
+exported from ngspice.}
 }
 \value{
 NULL.
