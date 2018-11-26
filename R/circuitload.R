@@ -81,7 +81,7 @@ circuitLoad <- function(circarray, dylibpath = NULL,
         spiceCommand("listing")
       }
     }
-    cat("Circuit is loaded successfully.\n")
+  #  cat("Circuit is loaded successfully.\n")
 
   #  invisible(out)
 }
