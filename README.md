@@ -1,14 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-1.  RSpice Background
-
-2.  Compilation of Ngspice as Shared Library
-
-3.  Installation of *RSpice*
-
-4.  Examples
-
 ## 1 - Background
 
 RSpice provides an interface to allow users to run ngspice, a popular
