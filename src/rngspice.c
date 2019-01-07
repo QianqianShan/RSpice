@@ -14,6 +14,8 @@ The header file sharedspice.h by 2013, Holger Vogt is also included with Modifie
 #include <signal.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
+
 
 
 /*WIN32 is defined on windows operating systems (32-bit and 64-bit)*/
@@ -64,10 +66,11 @@ typedef int *(*funptr_t)();
 #endif /* WIN32 */
 
 
-#ifndef BOOL
+/*
+#ifndef bool
  typedef int bool;
 #endif
-
+*/
 
 #define true 1
 #define false 0
