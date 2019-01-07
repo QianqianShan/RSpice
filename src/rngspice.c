@@ -63,7 +63,12 @@ typedef int *(*funptr_t)();
 
 #endif /* WIN32 */
 
-typedef int bool;
+
+#ifndef BOOL
+ typedef int bool;
+#endif
+
+
 #define true 1
 #define false 0
 
